@@ -1,0 +1,213 @@
+[
+    {
+        "id": 417935,
+        "idTipoProduto": null,
+        "idDrop": 5591,
+        "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/662023173325990.webp",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "999,99",
+        "nome": "Nike Air Force 1 Low GS Athletic Club Marina White",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/66202319617236.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/66202319617236.jpeg",
+        "TamanhoProdutoSelecao": [
+            "34",
+            "35",
+            "36",
+            "37",
+            "38"
+        ],
+        "nomeMarca": "Nike",
+        "urlMarca": "nike",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T16:06:30-03:00"
+    },
+    {
+        "id": 417934,
+        "idTipoProduto": null,
+        "idDrop": 5591,
+        "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/662023173325990.webp",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "1099,00",
+        "nome": "Nike Air Force 1 Low GS Athletic Club Marina White",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/6620231965879.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/6620231965879.jpeg",
+        "TamanhoProdutoSelecao": [
+            "34",
+            "35",
+            "36",
+            "37",
+            "38"
+        ],
+        "nomeMarca": "Nike",
+        "urlMarca": "nike",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T16:06:24-03:00"
+    },
+    {
+        "id": 417929,
+        "idTipoProduto": null,
+        "idDrop": null,
+        "dropIcon": null,
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "375,00",
+        "nome": "New Era x Moma  Mets",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/66202319351710.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/66202319351710.jpeg",
+        "TamanhoProdutoSelecao": [
+            "ÚNICO"
+        ],
+        "nomeMarca": null,
+        "urlMarca": null,
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T16:04:58-03:00"
+    },
+    {
+        "id": 417928,
+        "idTipoProduto": null,
+        "idDrop": 4791,
+        "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/3032023182854390.webp",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "1349,00",
+        "nome": "Air Jordan 1 Low SE Iced Lilac",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/66202319342375.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/66202319342375.jpeg",
+        "TamanhoProdutoSelecao": [
+            "36"
+        ],
+        "nomeMarca": "Air Jordan",
+        "urlMarca": "air jordan",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T16:04:19-03:00"
+    },
+    {
+        "id": 417922,
+        "idTipoProduto": null,
+        "idDrop": 4200,
+        "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/822023125355920.webp",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "1649,99",
+        "nome": "Air Jordan 1 Low GS SE Concord",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/662023185821514.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/662023185821514.jpeg",
+        "TamanhoProdutoSelecao": [
+            "35"
+        ],
+        "nomeMarca": "Air Jordan",
+        "urlMarca": "air jordan",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T15:58:34-03:00"
+    },
+    {
+        "id": 417916,
+        "idTipoProduto": null,
+        "idDrop": 1093,
+        "dropIcon": "https://droper-media.s3.amazonaws.com/57202117581597.png",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "889,00",
+        "nome": "Nike Dunk Low Pink Red White",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/662023185310635.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/662023185310635.jpeg",
+        "TamanhoProdutoSelecao": [
+            "38"
+        ],
+        "nomeMarca": "Nike",
+        "urlMarca": "nike",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T15:53:21-03:00"
+    },
+    {
+        "id": 417905,
+        "idTipoProduto": null,
+        "idDrop": 5401,
+        "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/2652023174636943.webp",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "1957,00",
+        "nome": "Yeezy 350 V2 Onyx (2023)",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/662023184326851.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/662023184326851.jpeg",
+        "TamanhoProdutoSelecao": [
+            "40"
+        ],
+        "nomeMarca": "Adidas",
+        "urlMarca": "adidas",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T15:43:45-03:00"
+    },
+    {
+        "id": 417904,
+        "idTipoProduto": null,
+        "idDrop": 2774,
+        "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/2672022132728831.webp",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "1479,00",
+        "nome": "Nike Dunk Low GS Triple Pink",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/662023184140941.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/662023184140941.jpeg",
+        "TamanhoProdutoSelecao": [
+            "37.5"
+        ],
+        "nomeMarca": "Nike",
+        "urlMarca": "nike",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T15:42:06-03:00"
+    },
+    {
+        "id": 417887,
+        "idTipoProduto": null,
+        "idDrop": 1093,
+        "dropIcon": "https://droper-media.s3.amazonaws.com/57202117581597.png",
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "1199,90",
+        "nome": "Nike Dunk Low Pink Red White",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/66202318175196.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/66202318175196.jpeg",
+        "TamanhoProdutoSelecao": [
+            "35",
+            "36",
+            "37",
+            "38"
+        ],
+        "nomeMarca": "Nike",
+        "urlMarca": "nike",
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T15:18:05-03:00"
+    },
+    {
+        "id": 417886,
+        "idTipoProduto": null,
+        "idDrop": null,
+        "dropIcon": null,
+        "idMarca": null,
+        "tituloTipoProduto": null,
+        "moeda": "R$",
+        "preco": "699,99",
+        "nome": "Bolsa Nike Sports Wear",
+        "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/662023181644559.jpeg",
+        "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/662023181644559.jpeg",
+        "TamanhoProdutoSelecao": [
+            "UNICO"
+        ],
+        "nomeMarca": null,
+        "urlMarca": null,
+        "totalFavoritadas": 0,
+        "dataCriacao": "2023-06-06T15:16:57-03:00"
+    }
+]
