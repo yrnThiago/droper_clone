@@ -3,18 +3,37 @@
   import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
   import tiposDeProduto from "@/api/tipos_produto.json";
   import produtos from "@/api/ProdutosFeed.json";
-
   import BottomNav from '@/components/BottomNav.vue';
-  import Footer from "@/components/Footer.vue";
+  import { ref, watch } from "vue";
 
-  import {ref} from "vue";
+  const filteredProducts = ref(produtos);
+  const showProgressLoading = ref(false);
   const productTypeSelected = ref(null);
   const sizeSelected = ref(null);
+  const productSizesType = ref();
+
+  watch(productTypeSelected, () => {
+    showProgressLoading.value = !showProgressLoading.value;
+    productSizesType.value = getSizes(productTypeSelected.value);
+  })
+
+  watch(showProgressLoading, (value: boolean) => {
+    if(!value) return;
+
+    setTimeout(() => (showProgressLoading.value = false), 999)
+  })
 
   const getSizes = (index: number | null) => {
+    if(index != undefined){
+      filteredProducts.value =
+      produtos.filter(product => product.idTipoProduto === index);
+    }else{
+      filteredProducts.value = produtos;
+    }
+
     const sizes = tiposDeProduto.tipos.find(item => item.id == index);
     return (!sizes) ? null : sizes["Tamanhos"];
-  }
+  };
 
 </script>
 
@@ -23,14 +42,21 @@
 
   <VContainer style="max-width: 1430px !important;">
 
+    <VProgressLinear
+      :active="showProgressLoading"
+      :indeterminate="showProgressLoading">
+    </VProgressLinear>
+
     <VRow no-gutters class="hidden-sm-and-up">
       <CustomChips v-model="productTypeSelected" :array="tiposDeProduto.tipos" singleLine/>
-      <CustomChips v-if="getSizes(productTypeSelected)" v-model="sizeSelected" title="TAMANHOS" :array="getSizes(productTypeSelected)" singleLine/>
+      <CustomChips v-if="productTypeSelected" v-model="sizeSelected" title="TAMANHOS" :array="productSizesType" singleLine/>
     </VRow>
 
-    <VRow>
+
+
+    <VRow v-if="!showProgressLoading">
       <VCol cols="12" sm="7" md="5" lg="5" class="text-medium-emphasis">
-        <div v-for="produto in produtos" :key="produto" class="product__card mb-10" style="cursor: pointer;">
+        <div v-for="produto in filteredProducts" :key="produto.id" class="product__card mb-10" style="cursor: pointer;">
           <ProductMarket
             :nomeMarca="produto.nomeMarca"
             :nomeProduto="produto.nome"
@@ -41,6 +67,8 @@
             :tamanhos="produto.TamanhoProdutoSelecao">
           </ProductMarket>
         </div>
+
+        <p v-if="!filteredProducts.length" class="text-center">Não encontramos nenhum item</p>
       </VCol>
 
       <VCol class="d-none d-sm-block" cols="2" sm="5" md="7" lg="7">
