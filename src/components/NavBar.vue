@@ -110,7 +110,7 @@
           </div>
         </VCol>
 
-        <VCol cols="4" md="2" lg="2" align-self="center">
+        <VCol cols="4" md="3" lg="2" align-self="center">
           <SearchBar v-model="SearchValue" rounded="xl" appendInnerIcon="mdi-arrow-right" :allowClearable="false" :allowEmptyString="false" :allowRedirect="true"/>
         </VCol>
 
