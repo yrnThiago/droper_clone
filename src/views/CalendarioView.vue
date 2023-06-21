@@ -8,7 +8,7 @@
   import dropsMaisCaros from "@/api/dropsMaisCaros.json";
 
   import BottomNav from '@/components/BottomNav.vue';
-  import dates from "@/api/dates.json";
+  import { meses, anos } from "@/api/dates.json";
 
   const yearSelected = ref(0);
   const monthSelected = ref(5);
@@ -21,18 +21,29 @@
     { title: 'MAIOR PREÇO', filter: 'retail' },
   ]);
 
-  const dropsOrganizado = ref(drops);
+  const filteredDrops = ref(drops);
   const showProgressLoading = ref(false);
 
+  const filteredDropsWithDate = () => {
+    const yearSelectedStr = anos[yearSelected.value].titulo.toLocaleLowerCase();
+    const monthSelectedStr = meses[monthSelected.value].titulo.toLocaleLowerCase();
+
+    filteredDrops.value = drops.filter(drop => drop.dataLancamentoAno == yearSelectedStr && drop.dataLancamentoMes == monthSelectedStr);
+  };
+
   const organizarDrops = (value: any) => {
-    showProgressLoading.value = !showProgressLoading.value;
     select.value = value;
-    if(select.value.filter == "maisvistos") dropsOrganizado.value = drops;
-    if(select.value.filter == "maisantigos") dropsOrganizado.value = dropsMaisAntigos.drops;
-    if(select.value.filter == "maisrecentes") dropsOrganizado.value = dropsRecentes.drops;
-    if(select.value.filter == "retail") dropsOrganizado.value = dropsMaisCaros.drops;
+    if(select.value.filter == "maisvistos") filteredDrops.value = drops;
+    if(select.value.filter == "maisantigos") filteredDrops.value = dropsMaisAntigos.drops;
+    if(select.value.filter == "maisrecentes") filteredDrops.value = dropsRecentes.drops;
+    if(select.value.filter == "retail") filteredDrops.value = dropsMaisCaros.drops;
 
   }
+
+  watch([yearSelected, monthSelected], () => {
+    showProgressLoading.value = !showProgressLoading.value;
+    filteredDropsWithDate();
+  })
 
   watch(showProgressLoading, (value: boolean) => {
     if(!value) return;
@@ -49,9 +60,9 @@
     :indeterminate="showProgressLoading">
   </VProgressLinear>
 
-  <VContainer style="max-width: 1350px !important;">
-    <CustomChips v-model="yearSelected" :array="dates.anos" size="x-large" singleLine/>
-    <CustomChips v-model="monthSelected" :array="dates.meses" size="large" singleLine/>
+  <VContainer style="max-width: 1350px !important;  min-height: 99vh;">
+    <CustomChips v-model="yearSelected" :array="anos" size="x-large" singleLine/>
+    <CustomChips v-model="monthSelected" :array="meses" size="large" singleLine/>
 
     <VRow class="pr-3" no-gutters justify="end">
       <VIcon icon="mdi-filter-variant" class="align-self-center ma-3"></VIcon>
@@ -74,7 +85,7 @@
 
     <VRow v-if="!showProgressLoading" no-gutters justify="start">
       <ProductCalendario
-        v-for="drop in dropsOrganizado" :key="drop.id"
+        v-for="drop in filteredDrops" :key="drop.id"
         :id="drop.id"
         :titulo="drop.titulo"
         :icone="drop.icone"
@@ -83,6 +94,15 @@
         :dataLancamentoMes="drop.dataLancamentoMes"
       />
     </VRow>
+
+    <VRow v-if="!filteredDrops.length && !showProgressLoading" no-gutters justify="center">
+      <div class="text-center">
+        <VIcon icon="mdi-cart-remove" size="64"></VIcon>
+        <p>Ainda não existem drops nessa data</p>
+      </div>
+
+    </VRow>
+
   </VContainer>
 
   <BottomNav/>

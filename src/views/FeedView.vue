@@ -13,6 +13,7 @@
   const productSizesType = ref();
 
   watch(productTypeSelected, () => {
+    scrollToTop();
     showProgressLoading.value = !showProgressLoading.value;
     productSizesType.value = getSizes(productTypeSelected.value);
   })
@@ -35,17 +36,21 @@
     return (!sizes) ? null : sizes["Tamanhos"];
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top:0, behavior: "smooth"
+    })
+  }
+
 </script>
 
 <template>
-
-
-  <VContainer style="max-width: 1430px !important;">
-
-    <VProgressLinear
+  <VProgressLinear
       :active="showProgressLoading"
       :indeterminate="showProgressLoading">
     </VProgressLinear>
+
+  <VContainer style="max-width: 1430px !important; min-height: 99vh;">
 
     <VRow no-gutters class="hidden-sm-and-up">
       <CustomChips v-model="productTypeSelected" :array="tiposDeProduto.tipos" singleLine/>
@@ -67,8 +72,10 @@
             :tamanhos="produto.TamanhoProdutoSelecao">
           </ProductMarket>
         </div>
+        <div class="d-flex justify-center">
+          <VBtn class="text-subtitle-2 text-uppercase" flat variant="text">Mais produtos</VBtn>
+        </div>
 
-        <p v-if="!filteredProducts.length" class="text-center">Não encontramos nenhum item</p>
       </VCol>
 
       <VCol class="d-none d-sm-block" cols="2" sm="5" md="7" lg="7">
