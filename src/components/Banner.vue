@@ -18,7 +18,7 @@
   <VCard
     class="mt-10"
     width="100%"
-    height="100%"
+    height="auto"
     rounded="xl"
   >
 

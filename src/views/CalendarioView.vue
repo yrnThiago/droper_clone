@@ -1,12 +1,15 @@
 <script setup lang="ts">
   import {ref, watch} from "vue";
   import ProductCalendario from "@/components/ProductCalendario.vue";
-  import Chips from "@/components/CustomComponents/CustomChipsGroup.vue"
+  import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
   import {drops} from "@/api/drops.json";
   import dropsRecentes from "@/api/dropsMaisRecentes.json";
   import dropsMaisAntigos from "@/api/dropsMaisAntigos.json";
   import dropsMaisCaros from "@/api/dropsMaisCaros.json";
+
+  import BottomNav from '@/components/BottomNav.vue';
   import dates from "@/api/dates.json";
+  import Footer from "@/components/Footer.vue"
 
   const yearSelected = ref(0);
   const monthSelected = ref(5);
@@ -41,16 +44,17 @@
 </script>
 
 <template>
+
   <VProgressLinear
     :active="showProgressLoading"
     :indeterminate="showProgressLoading">
   </VProgressLinear>
 
   <VContainer style="max-width: 1350px !important;">
-    <Chips v-model="yearSelected" :array="dates.anos" size="x-large" singleLine/>
+    <CustomChips v-model="yearSelected" :array="dates.anos" size="x-large" singleLine/>
+    <CustomChips v-model="monthSelected" :array="dates.meses" size="large" singleLine/>
 
-    <Chips v-model="monthSelected" :array="dates.meses" size="large" singleLine/>
-    <VRow no-gutters justify="end">
+    <VRow class="pr-3" no-gutters justify="end">
       <VIcon icon="mdi-filter-variant" class="align-self-center ma-3"></VIcon>
       <VCol cols="4" sm="3" md="2" lg="2" align-self="center">
         <VSelect
@@ -70,8 +74,8 @@
     </VRow>
 
     <VRow v-if="!showProgressLoading" no-gutters justify="start">
-      <VCol cols="6" sm="3" md="3" v-for="drop in dropsOrganizado" :key="drop.id">
-        <ProductCalendario
+      <ProductCalendario
+        v-for="drop in dropsOrganizado" :key="drop.id"
         :id="drop.id"
         :titulo="drop.titulo"
         :icone="drop.icone"
@@ -79,7 +83,8 @@
         :dataLancamentoDia="drop.dataLancamentoDia"
         :dataLancamentoMes="drop.dataLancamentoMes"
       />
-      </VCol>
     </VRow>
   </VContainer>
+
+  <BottomNav/>
 </template>

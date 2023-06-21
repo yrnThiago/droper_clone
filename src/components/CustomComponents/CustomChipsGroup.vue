@@ -10,11 +10,6 @@
   }>();
 
   const chipSelected = ref(props.modelValue);
-
-  watch(chipSelected, (value) => {
-    console.log(value)
-  })
-
 </script>
 
 <template>

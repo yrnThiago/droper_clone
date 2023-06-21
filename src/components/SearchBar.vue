@@ -1,43 +1,51 @@
-<script setup>
-  import { ref } from "vue"
-  const maxWidth = ref("280px");
-  const searchText = ref("Drops, produtos ou marcas");
-  const arrowIcon = ref("");
+<script setup lang="ts">
+  import { ref } from "vue";
+  import { useRouter } from "vue-router";
 
-  const expandSearchBar = () => {
-    maxWidth.value = maxWidth.value === "280px" ? "525px" : "280px";
-    searchText.value = searchText.value === "Drops, produtos ou marcas" ? "" : "Drops, produtos ou marcas";
-    arrowIcon.value = arrowIcon.value === "mdi-arrow-right" ? "" : "mdi-arrow-right"
+  const props = defineProps<{
+    modelValue: any
+    rounded: string
+    allowEmptyString: boolean
+    allowClearable: boolean
+    allowRedirect: boolean
+    appendInnerIcon?: string
+    placeholder?: string
+  }>();
+
+  const emits = defineEmits(["update:modelValue"]);
+
+  const updateField = (value: string) => {
+    emits('update:modelValue', value)
+  }
+
+  const searchTo = (value: string) => {
+    return (
+      value && props.allowRedirect || value != undefined && props.allowEmptyString
+      ) ? router.push(`/buscar/${value}`) : null;
   };
+
+  const router = useRouter();
+  const searchPlaceholder = ref("Drops, produtos ou marcas");
 
 </script>
 
 <template>
-  <v-text-field
-    v-model.trim="searchText"
-    prepend-inner-icon="mdi-magnify"
-    variant="solo"
-    class="search-bar"
+  <VTextField
     density="compact"
+    variant="solo"
+    :clearable="props.allowClearable"
+    :label="(props.placeholder)? props.placeholder : searchPlaceholder"
+    :model-value="props.modelValue"
+    prepend-inner-icon="mdi-magnify"
+    single-line
     hide-details
-    rounded
-    :placeholder="searchText"
-    :append-inner-icon ="arrowIcon"
-    @focus="expandSearchBar"
-    @blur="expandSearchBar"
-  />
+    :rounded="props.rounded"
+    :append-inner-icon="(appendInnerIcon && props.modelValue)? appendInnerIcon : ''"
+    @click:append-inner="searchTo(props.modelValue)"
+    @update:model-value="updateField"
+    @keyup.enter="searchTo(props.modelValue)"
+  ></VTextField>
 </template>
 
-<style lang="sass">
-  .v-input.search-bar
-    transition: max-width 1.0s
-    transition-timing-function: ease
-    right: 40px
-    bottom: 12px
-    position: absolute !important
-    z-index: 900 !important
-    height: 40px
-    min-width: 280px
-    .v-field--active input
-      opacity: 0.30
+<style>
 </style>

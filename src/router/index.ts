@@ -6,8 +6,12 @@ import MarketView from "../views/MarketView.vue"
 import VendasView from "../views/VendasView.vue"
 import SparksView from "../views/SparksView.vue"
 import NotificacoesView from "../views/NotificacoesView.vue"
-import BuscarView from "../views/BuscarView.vue"
+import SearchView from "../views/SearchView.vue"
 import NotFoundView from "../views/NotFoundView.vue"
+import SearchResults from "../components/SearchResults.vue"
+import Suggestions from "../components/Suggestions.vue"
+import NavBar from "../components/NavBar.vue"
+import VendasRelatorioView from "../components/VendasRelatorioView.vue"
 
 
 const router = createRouter({
@@ -20,7 +24,9 @@ const router = createRouter({
       path: "/home",
       alias: "/",
       name: "home",
-      component: HomeView,
+      components: {
+        default: HomeView
+      },
     },
     {
       path: "/calendario",
@@ -36,12 +42,20 @@ const router = createRouter({
       path: "/market",
       name: "market",
       alias: "/market/loja/inicio",
-      component: MarketView,
+      components: {
+        TopNavbar: NavBar,
+        default: MarketView,
+      }
     },
     {
       path: "/vendas",
       name: "vendas",
-      component: VendasView
+      component: VendasView,
+    },
+    {
+      path: "/vendas/relatorio",
+      name: "vendasRelatorio",
+      component: VendasRelatorioView
     },
     {
       path: "/sparks",
@@ -56,7 +70,22 @@ const router = createRouter({
     {
       path: "/buscar",
       name: "buscar",
-      component: BuscarView,
+      components: {
+        default: SearchView,
+      },
+      children: [
+        {
+          path: "/buscar/",
+          name: "suggestions",
+          component: Suggestions
+        },
+        {
+          path: "/buscar/:productName",
+          name: "productName",
+          component: SearchResults
+        }
+      ]
+
     },
     {
       path: "/erro/404",

@@ -3,6 +3,9 @@
   import { useRouter } from "vue-router";
   import PageTopNav from "@/components/PageTopNav.vue";
 
+  import BottomNav from '@/components/BottomNav.vue';
+  import Footer from "@/components/Footer.vue";
+
   const router = useRouter();
 
   const additionalBtns = ref([
@@ -53,7 +56,7 @@
 <template>
   <PageTopNav title="Sua loja" :additionalBtns="additionalBtns" />
 
-  <VContainer style="max-width: 980px;">
+  <VContainer style="max-width: 980px; min-height: 99vh;">
     <VCard height="220px" rounded="xl" class="seller__stats pa-3">
       <VRow no-gutters align-content="center" class="pa-2">
 
@@ -125,6 +128,8 @@
     </VCard>
 
   </VContainer>
+
+  <BottomNav/>
 
 </template>
 

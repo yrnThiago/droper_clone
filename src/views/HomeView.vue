@@ -7,12 +7,15 @@
   import IconsTable from "@/components/Tables/IconsTable.vue"
   import Banner from "@/components/Banner.vue"
   import CardDrops from "@/components/Cards/CardDrops.vue"
+  import Footer from "@/components/Footer.vue"
   import data from "@/api/data.json"
+
+  import BottomNav from '@/components/BottomNav.vue';
 </script>
 
 <template>
   <ImagesHome/>
-  <v-container style="max-width: 1430px !important;">
+  <VContainer style="max-width: 1430px !important;">
     <MarcasTable/>
     <LancamentosTable/>
     <Banner/>
@@ -20,6 +23,7 @@
     <BestSellersTable/>
     <IconsTable/>
     <CardDrops />
-  </v-container>
+  </VContainer>
+  <BottomNav/>
 
 </template>

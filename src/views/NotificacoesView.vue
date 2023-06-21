@@ -1,12 +1,15 @@
 <script setup>
   import {notificacoes} from "@/api/notificacoes.json";
   import PageTopNav from "@/components/PageTopNav.vue";
+
+  import BottomNav from '@/components/BottomNav.vue';
+  import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
-  <PageTopNav title="Notificações" :additionalBtns="['mdi-cog-box']" />
 
-  <VContainer style="max-width: 1045px !important;">
+  <PageTopNav title="Notificações" :additionalBtns="['mdi-cog-box']" />
+  <VContainer style="max-width: 1045px !important; min-height: 99vh;">
     <VCard width="98%" rounded="xl">
       <VCardTitle class="text-subtitle-1 font-weight-medium">VISUALIZADAS</VCardTitle>
       <VDivider></VDivider>
@@ -42,4 +45,6 @@
     </VRow>
 
   </VContainer>
+
+  <BottomNav/>
 </template>

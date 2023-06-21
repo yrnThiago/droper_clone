@@ -1,11 +1,15 @@
 <script setup>
   import {useRouter} from "vue-router";
 
+  import BottomNav from '@/components/BottomNav.vue';
+  import Footer from "@/components/Footer.vue"
+
   const router = useRouter();
 </script>
 
 <template>
-  <VContainer class="fill-height">
+
+  <VContainer class="fill-height" style="min-height: 99vh;">
     <VRow class="justify-center align-center">
       <VCol cols="12" sm="6" md="4">
 
@@ -25,4 +29,6 @@
       </VCol>
     </VRow>
   </VContainer>
+
+  <BottomNav/>
 </template>

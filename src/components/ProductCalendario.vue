@@ -12,7 +12,8 @@
 </script>
 
 <template>
-  <VCard flat height="300px" :to="`/d/${props.id}/${props.query}`" rounded="lg" class="pa-2 mb-3 ml-6 w-94">
+  <VCol class="px-2 pb-2" cols="6" sm="3" md="3">
+    <VCard class="product_calendar pa-2" flat height="300px" max-height="300px" :to="`/d/${props.id}/${props.query}`" rounded="lg">
       <VRow no-gutters justify="space-between">
         <VCol cols="11">
           <p style="font-size: 14px;">{{props.titulo}}</p>
@@ -36,9 +37,15 @@
           <VImg :src="props.icone"></VImg>
         </VCol>
       </VRow>
-  </VCard>
+    </VCard>
+  </VCol>
 </template>
 
-<style scoped>
+<style>
+  @media (max-width: 1024px){
+    .product_calendar {
+      height: 200px !important;
+    }
+  }
 
 </style>

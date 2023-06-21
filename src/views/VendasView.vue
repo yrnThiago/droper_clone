@@ -2,6 +2,8 @@
   import {ref} from "vue";
   import PageTopNav from "@/components/PageTopNav.vue";
   import Vendas from "@/components/Vendas.vue";
+  import BottomNav from '@/components/BottomNav.vue';
+  import SearchBar from "@/components/SearchBar.vue";
   import {iniciados, waitPagamento, pagos, problemas} from "@/api/vendas.json";
 
   const searchValue = ref("");
@@ -19,23 +21,12 @@
 </script>
 
 <template>
+
   <PageTopNav title="Vendas" />
 
-  <VContainer style="max-width: 1025px !important;">
+  <VContainer style="max-width: 1025px !important; min-height: 99vh;">
     <VRow no-gutters>
-      <v-text-field
-      :loading="loading"
-      density="compact"
-      variant="solo-filled"
-      label="Pesquise por ID, rastreio, produto ou status"
-      v-model="searchValue"
-      prepend-inner-icon="mdi-magnify"
-      single-line
-      hide-details
-      rounded="lg"
-      clearable
-      @click:append-inner="onClick"
-    ></v-text-field>
+      <SearchBar v-model="searchValue" rounded="lg" allowClearable :allowEmptyString="false" :allowRedirect="false" placeholder="Pesquise por ID, rastreio, produto ou status"/>
     </VRow>
 
     <VRow no-gutters>
@@ -46,7 +37,7 @@
     </VRow>
 
     <VRow no-gutters justify="center" class="mt-14">
-      <VBtn>
+      <VBtn to="/vendas/relatorio">
         <p>HISTÓRICO</p>
       </VBtn>
     </VRow>
@@ -56,4 +47,6 @@
     </VRow>
 
   </VContainer>
+
+  <BottomNav/>
 </template>
