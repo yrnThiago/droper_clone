@@ -9,7 +9,6 @@
 
   import BottomNav from '@/components/BottomNav.vue';
   import dates from "@/api/dates.json";
-  import Footer from "@/components/Footer.vue"
 
   const yearSelected = ref(0);
   const monthSelected = ref(5);
