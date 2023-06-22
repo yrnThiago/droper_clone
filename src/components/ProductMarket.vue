@@ -2,12 +2,15 @@
   import {useRouter} from "vue-router";
   import {ref} from "vue";
 
+  const emits = defineEmits(["addProductToFavorite"]);
+
   const router = useRouter();
   const changeRoute = (newRoute) => {
     router.push(newRoute);
   };
 
   const props = defineProps({
+    anuncioId: Number,
     nomeMarca: String,
     nomeProduto: String,
     moeda: String,
@@ -16,6 +19,15 @@
     totalFavoritadas: Number,
     tamanhos: Array
   });
+
+  const totalFavoritadas = ref(props.totalFavoritadas);
+
+  const addToFavorites = () => {
+    if(totalFavoritadas.value > 0) totalFavoritadas.value -= 1;
+    else totalFavoritadas.value += 1;
+
+    emits("addProductToFavorite", props.anuncioId, totalFavoritadas.value);
+  };
 
 </script>
 
@@ -33,8 +45,8 @@
 
       <VCol cols="1">
         <div class="d-flex">
-          <p class="mx-1" style="font-size: 14px">{{ props.totalFavoritadas}}</p>
-          <VIcon icon="mdi-heart-outline" size="20px" @click="console.log(`Liked`)"></VIcon>
+          <p class="mx-1" style="font-size: 14px">{{ totalFavoritadas }}</p>
+          <VIcon :icon="!totalFavoritadas ? 'mdi-heart-outline' : 'mdi-heart'" size="20px" @click="addToFavorites"></VIcon>
         </div>
 
       </VCol>
