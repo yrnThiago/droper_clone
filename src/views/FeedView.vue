@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import ProductMarket from "@/components/ProductMarket.vue"
+  import ProductFavorite from "@/components/Cards/ProductFavorite.vue"
   import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
   import tiposDeProduto from "@/api/tipos_produto.json";
   import productsFeed from "@/api/ProdutosFeed.json";
@@ -8,7 +9,7 @@
   import { ref, watch } from "vue";
 
   const filteredProducts = ref(productsFeed);
-  const favoritesProducts = ref(produtos);
+  const favoritesProducts = ref<Array<Object>>(produtos);
   const showProgressLoading = ref(false);
   const productTypeSelected = ref(null);
   const sizeSelected = ref(null);
@@ -17,12 +18,25 @@
   const addToFavorite = (anuncioId: Number, totalFavoritadas: number) => {
     if(totalFavoritadas){
       const productResult = productsFeed.find(product => product.id === anuncioId);
-      favoritesProducts.value.push(productResult);
+      favoritesProducts.value.push(productResult as Object);
+
+      console.log(favoritesProducts.value);
 
       console.log("Produto adicionado aos favoritos!", anuncioId, productResult);
     }
-    else console.log("Produto removido dos favoritos!", anuncioId);
   };
+
+  const removeFromFavorite = (anuncioId: Number, totalFavoritadas: number) => {
+    const productIndex = favoritesProducts.value.findIndex(product => product.id === anuncioId);
+
+    if(productIndex !== -1){
+      favoritesProducts.value.splice(productIndex, 1);
+      console.log("Produto removido dos favoritos!", anuncioId);
+    } else {
+      console.log("Produto não está na sua lista de favoritos!");
+    }
+
+  }
 
   watch(productTypeSelected, () => {
     scrollToTop();
@@ -83,7 +97,9 @@
             :fotoPrincipal="produto.fotoPrincipal"
             :totalFavoritadas="produto.totalFavoritadas"
             :tamanhos="produto.TamanhoProdutoSelecao"
-            @addProductToFavorite="addToFavorite">
+            @addProductToFavorite="addToFavorite"
+            @removeProductFromFavorite="removeFromFavorite"
+            >
           </ProductMarket>
         </div>
         <div class="d-flex justify-center">
@@ -93,7 +109,7 @@
       </VCol>
 
       <VCol style="top: 0; position: sticky;" class="d-none d-sm-block" cols="2" sm="5" md="7" lg="7">
-        <VRow>
+        <VRow no-gutters>
           <CustomChips v-model="productTypeSelected" :array="tiposDeProduto.tipos"/>
 
           <div v-if="productTypeSelected" class="mt-3">
@@ -102,14 +118,19 @@
 
         </VRow>
 
-        <div v-if="favoritesProducts" class="mt-5">
-          <VRow justify="space-between">
+        <div v-if="favoritesProducts.length" class="mt-5">
+          <VRow no-gutters justify="space-between" align="center">
             <h4 class="text-uppercase">Favoritos</h4>
-            <h6>VER TODOS</h6>
+            <VBtn flat variant="text" class="text-caption" @click="red">VER TODOS</VBtn>
           </VRow>
 
           <VRow>
-            CARD
+            <div class="d-inline-flex overflow-auto">
+              <ProductFavorite
+                v-for="pr in favoritesProducts" :key="pr.id"
+                :productInfo="pr"
+              />
+            </div>
           </VRow>
         </div>
       </VCol>

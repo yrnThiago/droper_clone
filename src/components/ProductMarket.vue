@@ -2,7 +2,7 @@
   import {useRouter} from "vue-router";
   import {ref} from "vue";
 
-  const emits = defineEmits(["addProductToFavorite"]);
+  const emits = defineEmits(["addProductToFavorite", "removeProductFromFavorite"]);
 
   const router = useRouter();
   const changeRoute = (newRoute) => {
@@ -23,10 +23,14 @@
   const totalFavoritadas = ref(props.totalFavoritadas);
 
   const addToFavorites = () => {
-    if(totalFavoritadas.value > 0) totalFavoritadas.value -= 1;
-    else totalFavoritadas.value += 1;
-
-    emits("addProductToFavorite", props.anuncioId, totalFavoritadas.value);
+    if(totalFavoritadas.value > 0) {
+      totalFavoritadas.value -= 1;
+      emits("removeProductFromFavorite", props.anuncioId, totalFavoritadas.value);
+    }
+    else {
+      totalFavoritadas.value += 1;
+      emits("addProductToFavorite", props.anuncioId, totalFavoritadas.value);
+    }
   };
 
 </script>
