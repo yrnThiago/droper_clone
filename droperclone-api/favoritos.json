@@ -1,0 +1,60 @@
+{
+    "produtos": [
+        {
+            "id": 427182,
+            "idTipoProduto": 1,
+            "idDrop": 4774,
+            "idMarca": null,
+            "tituloTipoProduto": null,
+            "moeda": "R$",
+            "preco": "1799,97",
+            "precoCusto": "",
+            "nome": "Air Jordan 1 High OG Lucky Green",
+            "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/2262023213356573.jpeg",
+            "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/2262023213356573.jpeg",
+            "isAtivo": true,
+            "isVendido": false,
+            "visitas": 15,
+            "isNovo": true,
+            "isOriginal": true,
+            "condicaoDescricao": "Novo com tag (DSWT)",
+            "dropIcon": "https://droper-media.us-southeast-1.linodeobjects.com/29320231432315.webp",
+            "descricao": null,
+            "statusBox": "Caixa original",
+            "Vendedor": null,
+            "TamanhoProdutoSelecao": [
+                "40",
+                "41",
+                "42",
+                "43"
+            ]
+        },
+        {
+            "id": 427032,
+            "idTipoProduto": 8,
+            "idDrop": null,
+            "idMarca": null,
+            "tituloTipoProduto": null,
+            "moeda": "R$",
+            "preco": "749,99",
+            "precoCusto": "",
+            "nome": "BONÉ SUPREME KEVLAR CAMP - CINZA ESCURO",
+            "linkfoto": "https://droper-media.us-southeast-1.linodeobjects.com/2262023183233742.jpeg",
+            "fotoPrincipal": "https://droper-media.us-southeast-1.linodeobjects.com/2262023183233742.jpeg",
+            "isAtivo": true,
+            "isVendido": false,
+            "visitas": 1,
+            "isNovo": true,
+            "isOriginal": true,
+            "condicaoDescricao": "Novo (DS)",
+            "dropIcon": null,
+            "descricao": null,
+            "statusBox": "Sem caixa",
+            "Vendedor": null,
+            "TamanhoProdutoSelecao": [
+                "ÚNICO"
+            ]
+        }
+    ],
+    "total": 2
+}
