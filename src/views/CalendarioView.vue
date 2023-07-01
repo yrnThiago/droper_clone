@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import {ref, watch} from "vue";
+  import {Ref, ref, watch} from "vue";
   import ProductCalendario from "@/components/ProductCalendario.vue";
   import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
   import {drops} from "@/api/drops.json";
@@ -9,6 +9,8 @@
 
   import BottomNav from '@/components/BottomNav.vue';
   import { meses, anos } from "@/api/dates.json";
+
+  export type SelectValue = {title: string, filter: string};
 
   const yearSelected = ref(0);
   const monthSelected = ref(5);
@@ -31,7 +33,7 @@
     filteredDrops.value = drops.filter(drop => drop.dataLancamentoAno == yearSelectedStr && drop.dataLancamentoMes == monthSelectedStr);
   };
 
-  const organizarDrops = (value: any) => {
+  const organizarDrops = (value: SelectValue) => {
     select.value = value;
     if(select.value.filter == "maisvistos") filteredDrops.value = drops;
     if(select.value.filter == "maisantigos") filteredDrops.value = dropsMaisAntigos.drops;

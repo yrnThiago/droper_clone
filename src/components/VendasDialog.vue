@@ -1,9 +1,10 @@
 <script setup lang="ts">
-  import {ref} from "vue";
+  import { VendaInfo } from "@/Interfaces/interfaces";
+import {ref} from "vue";
 
   const props = defineProps<{
     modelValue: boolean
-    sale: any
+    sale: VendaInfo
   }>();
 
   const showPopUpSale = ref(props.modelValue);

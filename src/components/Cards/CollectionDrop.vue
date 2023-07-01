@@ -1,26 +1,28 @@
 <script lang="ts" setup>
   import { ref } from "vue"
   import CustomRouterLink from "../CustomComponents/CustomRouterLink.vue";
+import { Collection } from "@/Interfaces/interfaces";
 
   export type CollectionIDs = "marcas" | "lancamentos" | "bestsellers" | "slider" | "colecao";
+  export type AdditionalBtnsTable = {title: string, route: string};
 
   const props = defineProps<{
-    collection: any
+    collection: Collection
     title?: string
     id?: CollectionIDs
-    additionalBtns?: Array<any>
+    additionalBtns?: Array<AdditionalBtnsTable>
   }>();
 
   const dropCollection = ref(props.collection);
 
   const dividirLista = (inicio: number, fim: number) => {
-    let collection = [];
-    if(props.title) collection = dropCollection.value;
-    else collection = dropCollection.value.drops;
+    let collectionResult = [];
+    if(props.title) collectionResult = dropCollection.value;
+    else collectionResult = dropCollection.value.drops;
 
     const novaLista = [];
     for (let i=inicio; i < fim; i++){
-      novaLista.push(collection[i]);
+      novaLista.push(collectionResult[i]);
     }
 
     return novaLista;

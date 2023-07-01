@@ -40,15 +40,16 @@
       <v-img :src="props.fotoPrincipal"></v-img>
     </VCard>
 
-    <VRow no-gutters class="mt-2">
-      <VCol cols="11">
+    <v-container fluid class="pa-2">
+      <VRow no-gutters class="mt-2">
+      <VCol cols="10">
         <p class="text-decoration-underline" @click="changeRoute(`/home`)">{{ props.nomeMarca }}</p>
         <p class="mt-1 mb-2">{{ props.nomeProduto }}</p>
         <h2 class="mb-1 text-lg font-weight-bold">{{props.moeda}} {{ props.preco }}</h2>
       </VCol>
 
-      <VCol cols="1">
-        <div class="d-flex">
+      <VCol cols="2">
+        <div class="d-flex justify-end">
           <p class="mx-1" style="font-size: 14px">{{ totalFavoritadas }}</p>
           <VIcon :icon="!totalFavoritadas ? 'mdi-heart-outline' : 'mdi-heart'" size="20px" @click="addToFavorites"></VIcon>
         </div>
@@ -58,16 +59,17 @@
     </VRow>
 
     <VRow no-gutters>
-      <VCol cols="11">
+      <VCol cols="10">
         <v-sheet v-for="tamanho in props.tamanhos" :key="tamanho" class="d-inline-flex mr-2 mb-3 bg-secondary" rounded>
             <p class="pa-1" style="font-size: 14px;">{{tamanho}}</p>
           </v-sheet>
       </VCol>
 
-      <VCol cols="1">
-        <p class="text-caption font-weight-light" style="font-size: 1px;">Há 2h</p>
+      <VCol cols="2">
+        <p class="text-end text-caption font-weight-light">Há 2h</p>
       </VCol>
 
     </VRow>
     <VDivider></VDivider>
+    </v-container>
 </template>

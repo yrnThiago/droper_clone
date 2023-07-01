@@ -1,9 +1,12 @@
 <script setup lang="ts">
-  import {ref, watch} from "vue";
+  import { TipoDeProduto } from "@/Interfaces/interfaces";
+import {ref, watch} from "vue";
+
+  export type anosEMeses = {numero: number, titulo: string};
 
   const props = defineProps<{
     modelValue: number | null,
-    array: Array<any> | null,
+    array: anosEMeses[] | TipoDeProduto[],
     size?: string,
     singleLine?: boolean,
     title?: string
@@ -29,7 +32,7 @@
         v-model:model-value="chipSelected"
         @update:model-value="$emit('update:modelValue', $event)"
         >
-          <VChip v-for="item in props.array" :key="item.id" :value="item.id" :size="props.size" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+        <VChip v-for="item in props.array" :key="item.id" :value="item.id" :size="props.size" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
       </VChipGroup>
     </div>
   </VRow>

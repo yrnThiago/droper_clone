@@ -3,7 +3,7 @@
   import { useRouter } from "vue-router";
 
   const props = defineProps<{
-    modelValue: any
+    modelValue: string
     rounded: string
     allowEmptyString: boolean
     allowClearable: boolean

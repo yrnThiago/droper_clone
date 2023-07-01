@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
+  import { AdditionalBtns } from "@/Interfaces/interfaces.js"
 
   const router = useRouter();
 
   const props = defineProps<{
     title: string
-    additionalBtns?: Array<any>
+    additionalBtns?: AdditionalBtns[];
   }>();
 
 </script>

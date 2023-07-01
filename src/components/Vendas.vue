@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import {ref} from "vue";
   import VendasDialog from "@/components/VendasDialog.vue";
+  import { VendaInfo } from "@/Interfaces/interfaces";
 
   const props = defineProps<{
     modelValue: boolean
@@ -8,7 +9,7 @@
     title: string
     icon: string
     message: string
-    info: Array<any>
+    info: VendaInfo[]
   }>();
 
   const isOpen = ref(false);

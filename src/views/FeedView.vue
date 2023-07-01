@@ -7,6 +7,9 @@
   import {produtos, total } from "@/api/favoritos.json";
   import BottomNav from '@/components/BottomNav.vue';
   import { ref, watch } from "vue";
+  import { useRouter } from "vue-router";
+
+  const router = useRouter();
 
   const filteredProducts = ref(productsFeed);
   const favoritesProducts = ref<Array<Object>>(produtos);
@@ -19,23 +22,13 @@
     if(totalFavoritadas){
       const productResult = productsFeed.find(product => product.id === anuncioId);
       favoritesProducts.value.push(productResult as Object);
-
-      console.log(favoritesProducts.value);
-
-      console.log("Produto adicionado aos favoritos!", anuncioId, productResult);
     }
   };
 
   const removeFromFavorite = (anuncioId: Number, totalFavoritadas: number) => {
     const productIndex = favoritesProducts.value.findIndex(product => product.id === anuncioId);
 
-    if(productIndex !== -1){
-      favoritesProducts.value.splice(productIndex, 1);
-      console.log("Produto removido dos favoritos!", anuncioId);
-    } else {
-      console.log("Produto não está na sua lista de favoritos!");
-    }
-
+    if(productIndex !== -1) favoritesProducts.value.splice(productIndex, 1);
   }
 
   watch(productTypeSelected, () => {
@@ -100,7 +93,7 @@
             @addProductToFavorite="addToFavorite"
             @removeProductFromFavorite="removeFromFavorite"
             >
-          </ProductMarket>
+          </ProductMarket>-
         </div>
         <div class="d-flex justify-center">
           <VBtn class="text-subtitle-2 text-uppercase" flat variant="text">Mais produtos</VBtn>
@@ -108,8 +101,9 @@
 
       </VCol>
 
-      <VCol style="top: 0; position: sticky;" class="d-none d-sm-block" cols="2" sm="5" md="7" lg="7">
-        <VRow no-gutters>
+      <VCol class="d-none d-sm-block" cols="2" sm="5" md="7" lg="7">
+        <VContainer fluid style="top: 0 !important; position: sticky !important; padding: 0;">
+          <VRow no-gutters>
           <CustomChips v-model="productTypeSelected" :array="tiposDeProduto.tipos"/>
 
           <div v-if="productTypeSelected" class="mt-3">
@@ -121,7 +115,7 @@
         <div v-if="favoritesProducts.length" class="mt-5">
           <VRow no-gutters justify="space-between" align="center">
             <h4 class="text-uppercase">Favoritos</h4>
-            <VBtn flat variant="text" class="text-caption" @click="red">VER TODOS</VBtn>
+            <VBtn flat variant="text" class="text-caption" @click="router.push('/favoritos')">VER TODOS</VBtn>
           </VRow>
 
           <VRow>
@@ -133,6 +127,8 @@
             </div>
           </VRow>
         </div>
+        </VContainer>
+
       </VCol>
     </VRow>
 

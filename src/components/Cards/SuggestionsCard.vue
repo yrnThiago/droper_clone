@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import TrackCard from "@/components/Cards/TrackCard.vue";
+  import { ProductSuggest } from "@/Interfaces/interfaces";
 
   const props = defineProps<{
-    suggestionDrops: Array<any>
+    suggestionDrops: Array<ProductSuggest>
     title: string
   }>();
 </script>
