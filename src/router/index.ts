@@ -12,6 +12,7 @@ import SearchResults from "../components/SearchResults.vue"
 import Suggestions from "../components/Suggestions.vue"
 import NavBar from "../components/NavBar.vue"
 import VendasRelatorioView from "../components/VendasRelatorioView.vue"
+import FavoritosView from "../views/FavoritosView.vue"
 
 
 const router = createRouter({
@@ -86,6 +87,11 @@ const router = createRouter({
         }
       ]
 
+    },
+    {
+      path: "/favoritos",
+      name: "favoritos",
+      component: FavoritosView
     },
     {
       path: "/erro/404",
