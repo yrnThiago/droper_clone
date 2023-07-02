@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import {Ref, ref, watch} from "vue";
+  import {onBeforeMount, Ref, ref, watch} from "vue";
   import ProductCalendario from "@/components/ProductCalendario.vue";
   import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
   import {drops} from "@/api/drops.json";
@@ -8,9 +8,27 @@
   import dropsMaisCaros from "@/api/dropsMaisCaros.json";
 
   import BottomNav from '@/components/BottomNav.vue';
-  import { meses, anos } from "@/api/dates.json";
+
+  import ApiService from "@/services/ApiService";
+import { Dates } from "@/Interfaces/interfaces";
 
   export type SelectValue = {title: string, filter: string};
+
+  const dates: Dates = {
+    anos: [],
+    meses: []
+  };
+
+  const datasLoaded = ref(false);
+
+  const apiService = new ApiService();
+  const apiEndpoint = 'public/calendar/';
+
+  onBeforeMount(async () => {
+    Object.assign(dates, (await apiService.get(`${apiEndpoint}dates`)).data)
+
+    datasLoaded.value = true;
+  })
 
   const yearSelected = ref(0);
   const monthSelected = ref(5);
@@ -27,8 +45,8 @@
   const showProgressLoading = ref(false);
 
   const filteredDropsWithDate = () => {
-    const yearSelectedStr = anos[yearSelected.value].titulo.toLocaleLowerCase();
-    const monthSelectedStr = meses[monthSelected.value].titulo.toLocaleLowerCase();
+    const yearSelectedStr = dates.anos[yearSelected.value].titulo.toLocaleLowerCase();
+    const monthSelectedStr = dates.meses[monthSelected.value].titulo.toLocaleLowerCase();
 
     filteredDrops.value = drops.filter(drop => drop.dataLancamentoAno == yearSelectedStr && drop.dataLancamentoMes == monthSelectedStr);
   };
@@ -63,8 +81,8 @@
   </VProgressLinear>
 
   <VContainer style="max-width: 1350px !important;  min-height: 99vh;">
-    <CustomChips v-model="yearSelected" :array="anos" size="x-large" singleLine/>
-    <CustomChips v-model="monthSelected" :array="meses" size="large" singleLine/>
+    <CustomChips v-if="datasLoaded" v-model="yearSelected" :array="dates.anos" size="x-large" singleLine/>
+    <CustomChips v-if="datasLoaded" v-model="monthSelected" :array="dates.meses" size="large" singleLine/>
 
     <VRow class="pr-3" no-gutters justify="end">
       <VIcon icon="mdi-filter-variant" class="align-self-center ma-3"></VIcon>

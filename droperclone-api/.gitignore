@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+node_modules/
+dist/
+tmp/
+temp/
+yarn-error.log
+.env
+.coverage
+.log
+
+!.vscode/settings.json
+!.vscode/extensions.json

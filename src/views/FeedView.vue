@@ -21,6 +21,8 @@
   const addToFavorite = (anuncioId: Number, totalFavoritadas: number) => {
     if(totalFavoritadas){
       const productResult = productsFeed.find(product => product.id === anuncioId);
+
+      console.log(productResult);
       favoritesProducts.value.push(productResult as Object);
     }
   };

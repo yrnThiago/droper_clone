@@ -1,12 +1,11 @@
 <script setup lang="ts">
-  import { TipoDeProduto } from "@/Interfaces/interfaces";
+  import { DateType, TipoDeProduto } from "@/Interfaces/interfaces";
 import {ref, watch} from "vue";
 
-  export type anosEMeses = {numero: number, titulo: string};
 
   const props = defineProps<{
     modelValue: number | null,
-    array: anosEMeses[] | TipoDeProduto[],
+    array: DateType[] | TipoDeProduto[],
     size?: string,
     singleLine?: boolean,
     title?: string

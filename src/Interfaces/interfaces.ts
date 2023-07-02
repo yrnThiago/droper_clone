@@ -252,3 +252,15 @@ export interface TipoDeProduto {
   Tamanhos: Tamanho[];
   opcoesPacote: any[];
 }
+
+export interface Dates {
+  anos: DateType[];
+  meses: DateType[];
+}
+
+export interface DateType {
+  numero: number;
+  titulo: string;
+}
+
+

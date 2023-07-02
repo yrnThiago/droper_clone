@@ -10,7 +10,7 @@
   const apiService = new ApiService();
 
   const userFavorites = async () => {
-    const favorites = await apiService.get('favoritos');
+    const favorites = await apiService.get('api/v1/public/health/ping');
 
     console.log(favorites);
   };
