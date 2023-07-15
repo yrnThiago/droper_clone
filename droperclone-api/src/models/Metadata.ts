@@ -3,7 +3,7 @@ import { PrimaryGeneratedColumn, Column, DeleteDateColumn } from "typeorm";
 
 class Metadata {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  uuid: string;
 
   @Column('timestamp', {
     name: 'created_at',

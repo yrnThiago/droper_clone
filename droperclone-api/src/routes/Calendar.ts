@@ -14,8 +14,7 @@ class CalendarRouter implements ICalendarRouter {
 
     router
       .route(`${this.path}`)
-      .post(this.calendarController.add)
-      .get(this.calendarController.getMany);
+      .post(this.calendarController.getMany);
 
     router
       .route(`${this.path}/dates`)

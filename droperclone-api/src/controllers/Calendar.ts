@@ -36,8 +36,13 @@ class CalendarController implements ICalendarController {
     const ctx = req.context;
 
     try {
-      const calendars = await this.calendarService.getMany(ctx);
-      return res.status(HttpStatus.OK).json(calendars);
+      const {
+        page = 0, amount = 100, filtro = "maisvistos", mes = 7, ano = 2023
+      } = req.body;
+
+      const calendars = await this.calendarService.getMany(ctx, page, amount, filtro, mes, ano);
+      const temMais = (calendars.length + 1 >= (page + 1) * amount);
+      return res.status(HttpStatus.OK).json({ drops: calendars, temMais, total: calendars.length });
     } catch (error) {
       return next(error);
     }

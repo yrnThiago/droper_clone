@@ -66,8 +66,10 @@ export interface DropItem {
   isTenis: boolean;
 }
 
-export interface Drops {
+export interface DropsResponseAPI {
   drops: DropItem[];
+  temMais: boolean;
+  total: number;
 }
 
 export interface AdditionalBtns {
@@ -221,7 +223,7 @@ export interface Collection {
   dataHoraCriacaoText: string;
   path: string;
   drop: Drop | null;
-  drops: Drops | null
+  drops: DropItem[] | null
 }
 
 export interface Tamanho {
@@ -263,4 +265,60 @@ export interface DateType {
   titulo: string;
 }
 
+export interface Product {
+  id: number;
+  idTipoProduto: number;
+  idDrop: number | null;
+  idMarca: number | null;
+  tituloTipoProduto: string | null;
+  moeda: string;
+  preco: string;
+  nome: string;
+  linkfoto: string;
+  fotoPrincipal: string;
+  dropIcon: string;
+  nomeMarca: string;
+  urlMarca: string;
+  totalFavoritas: number;
+  dataCriacao: Date;
+  TamanhoProdutoSelecao: string[];
+}
 
+export interface FavoriteProductsResponseAPI {
+  produtos: Product[];
+  total: number;
+}
+
+export interface ProductSizesType {
+  id: number;
+  idTipoProduto: number;
+  titulo: string;
+  tituloUs: string;
+}
+
+export interface TiposDeProdutoType {
+  id: number;
+  titulo: string;
+  tituloUs: string;
+  imagem: string;
+  temTamanhos: boolean;
+  categoria: number;
+  descricaoCategoria: string;
+  peso: number;
+  altura: number;
+  comprimento: number;
+  largura: number;
+  displayPeso: string;
+  displayAltura: null;
+  displayComprimento: null;
+  displayLargura: null;
+  isEletronico: boolean;
+  dadosPacoteCompleto: boolean;
+  Tamanhos: ProductSizesType[] | null;
+  opcoesPacote: any[];
+}
+
+export interface ProductSizesTypeApiResponse {
+  tipos: TiposDeProdutoType[];
+  marcas: any[];
+}

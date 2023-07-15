@@ -35,7 +35,7 @@ import { Collection } from "@/Interfaces/interfaces";
 
 <template>
   <h1 class="mt-12" style="font-size: 60px;">{{(!props.title) ? dropCollection.titulo : props.title}}</h1>
-  <VCard class="px-2 py-4" rounded="xl">
+  <VCard class="px-2 py-4 w-screen" rounded="xl">
 
     <VRow no-gutters class="d-none d-sm-flex">
 
@@ -212,6 +212,81 @@ import { Collection } from "@/Interfaces/interfaces";
       </VCol>
 
     </VRow>
+    <!-- <v-table>
+      <thead>
+      </thead>
+      <tbody>
+        <tr
+          v-for="drop in collection1"
+          :key="drop.name"
+        >
+          <td>
+            <div class="d-flex flex-column">
+              <p class="text-center" style="font-size: 22px;">
+                {{drop.dataLancamentoDia}}
+              </p>
+              <p class="text-center" style="font-size: 9px;">
+                {{drop.dataLancamentoMes}}/{{ drop.dataLancamentoAnoAbrev }}
+              </p>
+            </div>
+
+
+            <VImg
+            :src="drop.icone"
+            style="max-width: 90px;"
+            ></VImg>
+
+            <h4 style="font-size: 18px; line-height: 20px;">{{drop.titulo}}</h4>
+
+            <VDivider></VDivider>
+          </td>
+
+          <td>
+            <div class="d-flex flex-column">
+              <p class="text-center" style="font-size: 22px;">
+                {{drop.dataLancamentoDia}}
+              </p>
+              <p class="text-center" style="font-size: 9px;">
+                {{drop.dataLancamentoMes}}/{{ drop.dataLancamentoAnoAbrev }}
+              </p>
+            </div>
+
+
+            <VImg
+            :src="drop.icone"
+            style="max-width: 90px;"
+            ></VImg>
+
+            <h4 style="font-size: 18px; line-height: 20px;">{{drop.titulo}}</h4>
+
+            <VDivider></VDivider>
+          </td>
+
+          <td>
+            <div class="d-flex flex-column">
+              <p class="text-center" style="font-size: 22px;">
+                {{drop.dataLancamentoDia}}
+              </p>
+              <p class="text-center" style="font-size: 9px;">
+                {{drop.dataLancamentoMes}}/{{ drop.dataLancamentoAnoAbrev }}
+              </p>
+            </div>
+
+
+            <VImg
+            :src="drop.icone"
+            style="max-width: 90px;"
+            ></VImg>
+
+            <h4 style="font-size: 18px; line-height: 20px;">{{drop.titulo}}</h4>
+
+            <VDivider></VDivider>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </v-table> -->
   </VCard>
 
   <VRow no-gutters v-if="props.additionalBtns" justify="end">

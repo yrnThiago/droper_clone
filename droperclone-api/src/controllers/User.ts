@@ -50,9 +50,9 @@ class UserController implements IUserController {
     const ctx = req.context;
 
     try {
-      const { id = null } = req.params;
+      const { uuid = null } = req.params;
 
-      const user = await this.userService.getById(ctx, id);
+      const user = await this.userService.getById(ctx, uuid);
       if (!user) return res.status(HttpStatus.NOT_FOUND).json({ error: "user not found" });
 
       return res.status(HttpStatus.OK).json(user);
@@ -65,11 +65,11 @@ class UserController implements IUserController {
     const ctx = req.context;
 
     try {
-      const { id = null } = req.params;
+      const { uuid = null } = req.params;
       const userBody: User = req.body;
-      if (!id) return res.status(HttpStatus.BAD_REQUEST).json({ error: "id is missing" });
+      if (!uuid) return res.status(HttpStatus.BAD_REQUEST).json({ error: "uuid is missing" });
 
-      const user = await this.userService.getById(ctx, id);
+      const user = await this.userService.getById(ctx, uuid);
       if (!user) return res.status(HttpStatus.NOT_FOUND).json({ error: "user not found" });
       const newUser = await this.userService.update(ctx, user, userBody);
 
@@ -83,10 +83,10 @@ class UserController implements IUserController {
     const ctx = req.context;
 
     try {
-      const { id = null } = req.params;
-      if (!id) return res.status(HttpStatus.BAD_REQUEST).json({ error: "id is missing" });
+      const { uuid = null } = req.params;
+      if (!uuid) return res.status(HttpStatus.BAD_REQUEST).json({ error: "uuid is missing" });
 
-      const user = await this.userService.getById(ctx, id);
+      const user = await this.userService.getById(ctx, uuid);
       if (!user) return res.status(HttpStatus.NOT_FOUND).json({ error: "user not found" });
       const deletedUser = await this.userService.delete(ctx, user);
 

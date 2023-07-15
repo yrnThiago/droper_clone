@@ -3,13 +3,16 @@
   import { useRouter } from "vue-router"
   import DarkMode from "@/components/DarkMode.vue"
 
+  const props = defineProps<{
+    userIsLoggedIn: boolean;
+  }>();
+
   const router = useRouter();
   const redirectTo = (path: string) => {
     router.push(path);
   };
 
   const showPopUpDarkMode = ref(false);
-  const isLogged = ref(true);
 
   const userItems = ref([
   { route: "/home",
@@ -84,7 +87,7 @@
 </script>
 
 <template>
-  <VBtn v-if="!isLogged" class="mt-6 mb-3" block color="background-black">ENTRAR</VBtn>
+  <VBtn v-if="!props.userIsLoggedIn" class="mt-6 mb-3" block color="background-black">ENTRAR</VBtn>
   <VDivider class="pa-2"></VDivider>
 
   <v-list>
@@ -92,7 +95,7 @@
   </v-list>
   <VDivider class="pa-2"></VDivider>
 
-  <v-list v-if="isLogged">
+  <v-list v-if="props.userIsLoggedIn">
     <v-list-item prepend-icon="mdi-account-circle-outline" title="Usuário" @click="redirectTo('/market')"></v-list-item>
     <VDivider class="pa-2"></VDivider>
     <v-list-item v-for="item in userItems" :key="item.value" :prepend-icon="item.icon" :title="item.title" @click="redirectTo(item.route)"></v-list-item>

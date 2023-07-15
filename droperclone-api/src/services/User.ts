@@ -19,8 +19,8 @@ class UserService implements IUserService {
     return this.userRepository.getMany(ctx);
   }
 
-  async getById(ctx: IContext, id: string): Promise<User> {
-    return this.userRepository.getById(ctx, id);
+  async getById(ctx: IContext, uuid: string): Promise<User> {
+    return this.userRepository.getById(ctx, uuid);
   }
 
   async getByEmail(ctx: IContext, email: string): Promise<User> {

@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
   import {useRouter} from "vue-router";
-  import {ref} from "vue";
+  import {computed, ref} from "vue";
 
   const emits = defineEmits(["addProductToFavorite", "removeProductFromFavorite"]);
 
@@ -9,27 +9,51 @@
     router.push(newRoute);
   };
 
-  const props = defineProps({
-    anuncioId: Number,
-    nomeMarca: String,
-    nomeProduto: String,
-    moeda: String,
-    preco: String,
-    fotoPrincipal: String,
-    totalFavoritadas: Number,
-    tamanhos: Array
+  const props = defineProps<{
+    anuncioId: number;
+    nomeMarca: string;
+    nomeProduto: string;
+    moeda: string;
+    preco: string;
+    fotoPrincipal: string;
+    totalFavoritas: number;
+    tamanhos: Array<string>;
+    dataCriacao: Date;
+    userLiked: boolean;
+  }>();
+
+  const totalFavoritadas = ref(props.totalFavoritas);
+  const userAlreadyLiked = ref(props.userLiked);
+  const productCreatedAt = ref(new Date(props.dataCriacao));
+
+  const calculateDifferenceTime = () => {
+    const dateNow: Date = new Date();
+    const difference: number = (dateNow.getTime() - productCreatedAt.value.getTime());
+    const dayInMilliseconds: number = 24 * 60 * 60 * 1000;
+    if(difference >= dayInMilliseconds) return `Há ${Math.floor(difference / dayInMilliseconds)}d`;
+    else return `Há ${Math.floor(difference / (60 * 60 * 1000))}h`;
+  };
+
+  const userIsLoggedIn = computed(() => {
+    const cookieAuth = localStorage.getItem("is-auth");
+    if (cookieAuth !== null) return true;
+    else return false;
   });
 
-  const totalFavoritadas = ref(props.totalFavoritadas);
+  const productCreatedAtStr = calculateDifferenceTime();
 
   const addToFavorites = () => {
-    if(totalFavoritadas.value > 0) {
+    if(userAlreadyLiked.value && userIsLoggedIn.value) {
       totalFavoritadas.value -= 1;
+      userAlreadyLiked.value = false;
       emits("removeProductFromFavorite", props.anuncioId, totalFavoritadas.value);
     }
     else {
-      totalFavoritadas.value += 1;
       emits("addProductToFavorite", props.anuncioId, totalFavoritadas.value);
+      if (userIsLoggedIn.value) {
+        totalFavoritadas.value += 1;
+        userAlreadyLiked.value = true;
+      }
     }
   };
 
@@ -37,10 +61,10 @@
 
 <template>
     <VCard rounded="lg" to="/">
-      <v-img :src="props.fotoPrincipal"></v-img>
+      <VImg :src="props.fotoPrincipal"></VImg>
     </VCard>
 
-    <v-container fluid class="pa-2">
+    <VContainer fluid class="pa-2">
       <VRow no-gutters class="mt-2">
       <VCol cols="10">
         <p class="text-decoration-underline" @click="changeRoute(`/home`)">{{ props.nomeMarca }}</p>
@@ -51,7 +75,7 @@
       <VCol cols="2">
         <div class="d-flex justify-end">
           <p class="mx-1" style="font-size: 14px">{{ totalFavoritadas }}</p>
-          <VIcon :icon="!totalFavoritadas ? 'mdi-heart-outline' : 'mdi-heart'" size="20px" @click="addToFavorites"></VIcon>
+          <VIcon :icon="userAlreadyLiked ? 'mdi-heart' : 'mdi-heart-outline'" size="20px" @click="addToFavorites"></VIcon>
         </div>
 
       </VCol>
@@ -66,10 +90,10 @@
       </VCol>
 
       <VCol cols="2">
-        <p class="text-end text-caption font-weight-light">Há 2h</p>
+        <p class="text-end text-caption font-weight-light">{{ productCreatedAtStr }}</p>
       </VCol>
 
     </VRow>
-    <VDivider></VDivider>
-    </v-container>
+    </VContainer>
+    <VDivider color="white"></VDivider>
 </template>

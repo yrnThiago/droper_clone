@@ -208,3 +208,37 @@ export const DATES = {
     }
   ]
 };
+
+export interface DateType {
+  numero: number;
+  titulo: string;
+};
+
+export interface Dates {
+  anos: DateType[];
+  meses: DateType[];
+};
+
+export interface CalendarItem {
+  id: number;
+  nomeMarca: string | null;
+  logoMarca: string | null;
+  titulo: string;
+  icone: string;
+  url: string;
+  query: string;
+  precoRetail: string;
+  precofRetail: number;
+  forceCompraPro: boolean;
+  dataLancamentoMes: string;
+  dataLancamentoDia: string;
+  dataLancamentoAno: string;
+  dataLancamentoAnoAbrev: string;
+  isTenis: boolean;
+}
+
+export type CalendarOrderType = {
+  [K in keyof CalendarItem]?: "ASC" | "DESC";
+};
+
+export type filterKeyType = {[K in "retail" | "maisvistos" | "maisantigos" | "maisrecentes"]?: CalendarOrderType};

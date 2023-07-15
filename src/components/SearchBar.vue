@@ -6,8 +6,8 @@
     modelValue: string
     rounded: string
     allowEmptyString: boolean
-    allowClearable: boolean
-    allowRedirect: boolean
+    allowClearable?: boolean
+    allowRedirect?: boolean
     appendInnerIcon?: string
     placeholder?: string
   }>();
@@ -19,9 +19,9 @@
   }
 
   const searchTo = (value: string) => {
-    return (
-      value && props.allowRedirect || value != undefined && props.allowEmptyString
-      ) ? router.push(`/buscar/${value}`) : null;
+    if (value && props.allowRedirect || value != undefined && props.allowEmptyString) {
+      router.push(`/buscar/${value}`);
+    }
   };
 
   const router = useRouter();

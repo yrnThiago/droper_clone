@@ -1,34 +1,44 @@
-<script setup>
+<script setup lang="ts">
+import { onBeforeMount, ref } from "vue";
   import PageTopNav from "@/components/PageTopNav.vue";
-  import {produtos, total} from "@/api/favoritos.json";
   import ApiService from '@/services/ApiService'
+import { FavoriteProductsResponseAPI } from "@/Interfaces/interfaces";
 
-  const removeProductFromFavorites = () => {
-    console.log("Produto removido dos favoritos!");
-  };
+  const favorites = ref({} as FavoriteProductsResponseAPI);
+  const favoritesLoaded = ref(false);
 
   const apiService = new ApiService();
+  const apiEndpoint = 'public/produtos';
 
-  const userFavorites = async () => {
-    const favorites = await apiService.get('api/v1/public/health/ping');
+  onBeforeMount(async () => {
+    favorites.value = (await apiService.get(`${apiEndpoint}favoritos`)).data;
+    favoritesLoaded.value = true;
+  });
 
-    console.log(favorites);
-  };
+  const onDelete = async (id: number) => {
+    await apiService.delete(`${apiEndpoint}/${id}/favorito`)
 
-  userFavorites();
+    let data = (await apiService.get(`${apiEndpoint}/${id}`)).data;
+    data.totalFavoritas -= 1;
+
+    favorites.value.total -= 1;
+    favorites.value.produtos = favorites.value.produtos.filter(product => product.id !== id);
+
+    await apiService.post(`${apiEndpoint}/${id}`, data);
+  }
 
 </script>
 
 <template>
   <PageTopNav title="Favoritos"/>
-  <VContainer style="max-width: 1025px; min-height: 99vh;">
+  <VContainer v-if="favoritesLoaded" style="max-width: 1025px; min-height: 99vh;">
     <VRow no-gutters justify="end">
-      <p class="text-subtitle-1 text-disabled">{{`${total} produtos`}}</p>
+      <p class="text-subtitle-1 text-disabled">{{`${favorites.total} produtos`}}</p>
     </VRow>
 
     <VRow>
       <VCard width="100%" rounded="xl">
-        <VListItem class="text-medium-emphasis" v-for="product in produtos" :key="product.id" @click="removeProductFromFavorites">
+        <VListItem class="text-medium-emphasis" v-for="product in favorites.produtos" :key="product.id">
           <VRow no-gutters>
             <VCol>
               <div class="d-flex">
@@ -53,7 +63,7 @@
 
             <VCol cols="1" align-self="center">
               <VRow no-gutters justify="end">
-                <VIcon icon="mdi-delete"></VIcon>
+                <VIcon icon="mdi-delete" @click="onDelete(product.id)"></VIcon>
 
               </VRow>
 

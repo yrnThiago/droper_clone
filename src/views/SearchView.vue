@@ -7,12 +7,7 @@
   const router = useRouter();
   const route = useRoute();
 
-  let searchValue = ref(route.params.productName);
-
-  watch(route, () => {
-    searchValue.value = route.params.productName;
-  });
-
+  let searchValue = ref(route.params.productName.toString());
 
   const limparBarraDePesquisa = () => {
     searchValue.value = "";
@@ -28,7 +23,7 @@
     <VRow no-gutters>
 
       <VCol cols="9" sm="10" md="11">
-        <SearchBar v-model="searchValue" :allowClearable="true" rounded="xl" :allowEmptyString="true" :allowRedirect="true"/>
+        <SearchBar v-model="searchValue" rounded="xl" allowEmptyString allowRedirect/>
       </VCol>
 
       <VCol cols="3" sm="2" md="1" align-self="center">

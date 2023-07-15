@@ -8,7 +8,7 @@ import IRequestWithContext from "@interfaces/RequestWithContext";
 interface IUserRepository {
   add(ctx: IContext, user: User): Promise<User>;
   getMany(ctx: IContext,): Promise<User[]>;
-  getById(ctx: IContext, id: string): Promise<User>;
+  getById(ctx: IContext, uuid: string): Promise<User>;
   getByLogin(ctx: IContext, login: User): Promise<User>;
   getByEmail(ctx: IContext, email: string): Promise<User>;
   update(ctx: IContext, user: User, newUserData: User): Promise<User>;
@@ -20,7 +20,7 @@ interface IUserService {
 
   add(ctx: IContext, user: User): Promise<User>;
   getMany(ctx: IContext,): Promise<User[]>;
-  getById(ctx: IContext, id: string): Promise<User>;
+  getById(ctx: IContext, uuid: string): Promise<User>;
   getByEmail(ctx: IContext, email: string): Promise<User>;
   update(ctx: IContext, user: User, newUserData: User): Promise<User>;
   delete(ctx: IContext, user: User): Promise<User>;

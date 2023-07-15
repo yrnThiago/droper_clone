@@ -14,7 +14,6 @@
   const loading = ref(props.modelValue)
   const showProgress = () => {
     loading.value = true;
-    console.log(loading.value)
 
     setTimeout(() => (loading.value = false), 1000)
     updateModelValue()

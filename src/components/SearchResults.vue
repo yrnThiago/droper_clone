@@ -1,16 +1,26 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { onMounted, ref, watch } from "vue";
   import ProductCalendario from "@/components/ProductCalendario.vue";
-  import {drops} from "@/api/drops.json";
   import { useRoute } from "vue-router";
+import ApiService from "@/services/ApiService";
+import { DropItem } from "@/Interfaces/interfaces";
 
   const route = useRoute();
-  const productName = route.params.productName;
+  const productName = ref(route.params.productName.toString());
 
-  const buscarDrops = (value: string) => {
-    return drops.filter(drop => drop.titulo.includes(value));
+  const apiService = new ApiService();
+  const apiEndpoint = 'public/search/';
+
+  const payload = {
+    "termo": productName.value
   };
-  const dropsFiltrados = buscarDrops(productName);
+  const dropsFiltrados = ref([] as DropItem[])
+
+  const searchDrops = async () => {
+    dropsFiltrados.value = (await apiService.post(`${apiEndpoint}`, payload)).data.drops;
+  }
+
+  onMounted(async () => await searchDrops());
 
 </script>
 

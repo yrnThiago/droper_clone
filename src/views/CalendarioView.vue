@@ -2,15 +2,10 @@
   import {onBeforeMount, Ref, ref, watch} from "vue";
   import ProductCalendario from "@/components/ProductCalendario.vue";
   import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
-  import {drops} from "@/api/drops.json";
-  import dropsRecentes from "@/api/dropsMaisRecentes.json";
-  import dropsMaisAntigos from "@/api/dropsMaisAntigos.json";
-  import dropsMaisCaros from "@/api/dropsMaisCaros.json";
-
   import BottomNav from '@/components/BottomNav.vue';
 
   import ApiService from "@/services/ApiService";
-import { Dates } from "@/Interfaces/interfaces";
+import { Dates, DropsResponseAPI } from "@/Interfaces/interfaces";
 
   export type SelectValue = {title: string, filter: string};
 
@@ -19,19 +14,28 @@ import { Dates } from "@/Interfaces/interfaces";
     meses: []
   };
 
+  const dropsAPI = ref({} as DropsResponseAPI);
+
   const datasLoaded = ref(false);
 
   const apiService = new ApiService();
   const apiEndpoint = 'public/calendar/';
 
+
+  const payload = ref({page: 0, amount: 100, filtro: "maisvistos", mes: 7, ano: 2023});
+
   onBeforeMount(async () => {
     Object.assign(dates, (await apiService.get(`${apiEndpoint}dates`)).data)
+    Object.assign(dropsAPI.value, (await apiService.post(`${apiEndpoint}`, payload.value)).data)
 
     datasLoaded.value = true;
   })
 
-  const yearSelected = ref(0);
-  const monthSelected = ref(5);
+  const searchDropsWithFilter = async () => {
+    const filteredDrops = (await apiService.post(`${apiEndpoint}`, payload.value)).data;
+
+    dropsAPI.value = filteredDrops;
+  };
 
   const select = ref({ title: 'MAIS VISTOS', filter: 'maisvistos' })
   const items = ref([
@@ -41,28 +45,16 @@ import { Dates } from "@/Interfaces/interfaces";
     { title: 'MAIOR PREÇO', filter: 'retail' },
   ]);
 
-  const filteredDrops = ref(drops);
   const showProgressLoading = ref(false);
 
-  const filteredDropsWithDate = () => {
-    const yearSelectedStr = dates.anos[yearSelected.value].titulo.toLocaleLowerCase();
-    const monthSelectedStr = dates.meses[monthSelected.value].titulo.toLocaleLowerCase();
-
-    filteredDrops.value = drops.filter(drop => drop.dataLancamentoAno == yearSelectedStr && drop.dataLancamentoMes == monthSelectedStr);
-  };
-
-  const organizarDrops = (value: SelectValue) => {
+  const dropFilterSelected = (value: SelectValue) => {
     select.value = value;
-    if(select.value.filter == "maisvistos") filteredDrops.value = drops;
-    if(select.value.filter == "maisantigos") filteredDrops.value = dropsMaisAntigos.drops;
-    if(select.value.filter == "maisrecentes") filteredDrops.value = dropsRecentes.drops;
-    if(select.value.filter == "retail") filteredDrops.value = dropsMaisCaros.drops;
-
+    payload.value.filtro = value.filter;
   }
 
-  watch([yearSelected, monthSelected], () => {
+  watch(payload.value, () => {
     showProgressLoading.value = !showProgressLoading.value;
-    filteredDropsWithDate();
+    searchDropsWithFilter();
   })
 
   watch(showProgressLoading, (value: boolean) => {
@@ -81,8 +73,8 @@ import { Dates } from "@/Interfaces/interfaces";
   </VProgressLinear>
 
   <VContainer style="max-width: 1350px !important;  min-height: 99vh;">
-    <CustomChips v-if="datasLoaded" v-model="yearSelected" :array="dates.anos" size="x-large" singleLine/>
-    <CustomChips v-if="datasLoaded" v-model="monthSelected" :array="dates.meses" size="large" singleLine/>
+    <CustomChips v-if="datasLoaded" v-model="payload.ano" :array="dates.anos" size="x-large" singleLine/>
+    <CustomChips v-if="datasLoaded" v-model="payload.mes" :array="dates.meses" size="large" singleLine/>
 
     <VRow class="pr-3" no-gutters justify="end">
       <VIcon icon="mdi-filter-variant" class="align-self-center ma-3"></VIcon>
@@ -97,7 +89,7 @@ import { Dates } from "@/Interfaces/interfaces";
           persistent-hint
           return-object
           single-line
-          @update:model-value="organizarDrops"
+          @update:model-value="dropFilterSelected"
         >
         </VSelect>
       </VCol>
@@ -105,7 +97,7 @@ import { Dates } from "@/Interfaces/interfaces";
 
     <VRow v-if="!showProgressLoading" no-gutters justify="start">
       <ProductCalendario
-        v-for="drop in filteredDrops" :key="drop.id"
+        v-for="drop in dropsAPI.drops" :key="drop.id"
         :id="drop.id"
         :titulo="drop.titulo"
         :icone="drop.icone"
@@ -115,7 +107,7 @@ import { Dates } from "@/Interfaces/interfaces";
       />
     </VRow>
 
-    <VRow v-if="!filteredDrops.length && !showProgressLoading" no-gutters justify="center">
+    <VRow v-if="!dropsAPI.total && !showProgressLoading && datasLoaded" no-gutters justify="center">
       <div class="text-center">
         <VIcon icon="mdi-cart-remove" size="64"></VIcon>
         <p>Ainda não existem drops nessa data</p>

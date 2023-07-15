@@ -23,21 +23,21 @@ class UserRepository implements IUserRepository {
     return users;
   }
 
-  async getById(ctx: IContext, id: string): Promise<User> {
-    const user = await this.repository.findOne(id);
+  async getById(ctx: IContext, uuid: string): Promise<User> {
+    const user = await this.repository.findOne(uuid);
     return user;
   }
 
   async getByLogin(ctx: IContext, login: User): Promise<User> {
     const userRaw = await this.repository.createQueryBuilder()
-      .select("id, password")
+      .select("uuid, password")
       .addSelect("password")
       .where("email = :email", { email: login.email })
       .getRawOne();
 
     if (!userRaw || !passwordUtils.compareHashPassword(login.password, userRaw.password)) return null;
 
-    const user = await this.repository.findOne(userRaw.id);
+    const user = await this.repository.findOne(userRaw.uuid);
 
     return user;
   }
@@ -49,8 +49,8 @@ class UserRepository implements IUserRepository {
 
   async update(ctx: IContext, user: User, newUserData: User): Promise<User> {
     user = await this.repository.manager.transaction(async(entityManager): Promise<User> => {
-      await entityManager.update(User, user.id, newUserData);
-      user = await entityManager.findOne(User, user.id);
+      await entityManager.update(User, user.uuid, newUserData);
+      user = await entityManager.findOne(User, user.uuid);
       return user;
     });
 

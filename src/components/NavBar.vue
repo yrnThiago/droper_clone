@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import {ref} from "vue";
+  import {computed, ref, watch} from "vue";
   import {useRouter, useRoute} from "vue-router";
 
   import Menu from "@/components/Menu.vue";
@@ -7,6 +7,11 @@
   import SidebarItems from "./SidebarItems.vue";
 
   const router = useRouter();
+  const userIsLoggedIn = computed(() => {
+    const cookieAuth = localStorage.getItem("is-auth");
+    if (cookieAuth !== null) return true;
+    else return false;
+  });
 
   const drawer = ref(false);
   const SearchValue = ref("");
@@ -67,7 +72,7 @@
         </template>
       </v-list-item>
 
-      <SidebarItems />
+      <SidebarItems :userIsLoggedIn="userIsLoggedIn"/>
 
     </v-list>
   </v-navigation-drawer>
@@ -94,7 +99,7 @@
         <VSpacer class="hidden-sm-and-down"></VSpacer>
 
         <VCol class="hidden-sm-and-down" cols="3" md="3" lg="2" align-self="center">
-          <div class="d-flex justify-end">
+          <div v-if="userIsLoggedIn" class="d-flex justify-end">
             <v-btn icon v-for="btn in rightSideBtns" :key="btn.value" @click="redirectTo(btn.route)">
               <v-icon>{{ btn.icon }}</v-icon>
               <v-tooltip
@@ -107,6 +112,12 @@
                 <v-avatar image="https://cdn.discordapp.com/avatars/244933465634504712/16ddc2f5134e5b9a00c47ca9058d0159.webp?size=64"></v-avatar>
               </v-icon>
             </v-btn>
+          </div>
+
+          <div v-else class="d-flex justify-end">
+            <VBtn class="mr-4" variant="elevated">
+              <span class="text-color-text-btn text-button" @click="router.push('/entrar')">Entrar</span>
+            </VBtn>
           </div>
         </VCol>
 

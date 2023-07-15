@@ -1,42 +1,89 @@
 <script setup lang="ts">
   import ProductMarket from "@/components/ProductMarket.vue"
   import ProductFavorite from "@/components/Cards/ProductFavorite.vue"
-  import CustomChips from "@/components/CustomComponents/CustomChipsGroup.vue"
-  import tiposDeProduto from "@/api/tipos_produto.json";
-  import productsFeed from "@/api/ProdutosFeed.json";
-  import {produtos, total } from "@/api/favoritos.json";
   import BottomNav from '@/components/BottomNav.vue';
-  import { ref, watch } from "vue";
-  import { useRouter } from "vue-router";
+  import { onBeforeMount, ref, watch } from "vue";
+  import { useRoute, useRouter } from "vue-router";
+import ApiService from "@/services/ApiService";
+import { FavoriteProductsResponseAPI, ProductSizesTypeApiResponse, Product } from "@/Interfaces/interfaces";
+import { computed } from "vue";
 
   const router = useRouter();
+  const route = useRoute();
 
-  const filteredProducts = ref(productsFeed);
-  const favoritesProducts = ref<Array<Object>>(produtos);
+  const filteredProducts = ref([] as Product[]);
+  const tiposDeProduto = ref({} as ProductSizesTypeApiResponse);
   const showProgressLoading = ref(false);
   const productTypeSelected = ref(null);
   const sizeSelected = ref(null);
   const productSizesType = ref();
+  const pageProducts = ref(0);
+  const idTipoProduto = ref(0);
+  const showLoggedInMessage = ref(false);
+  const userIsLoggedIn = computed(() => {
+    const cookieAuth = localStorage.getItem("is-auth");
+    if (cookieAuth !== null) return true;
+    else return false;
+  });
 
-  const addToFavorite = (anuncioId: Number, totalFavoritadas: number) => {
-    if(totalFavoritadas){
-      const productResult = productsFeed.find(product => product.id === anuncioId);
+  const favorites = ref({} as FavoriteProductsResponseAPI);
+  const favoritesLoaded = ref(false);
 
-      console.log(productResult);
-      favoritesProducts.value.push(productResult as Object);
+  const apiService = new ApiService();
+  const apiEndpoint = 'public/produtos';
+
+  const onAdd = async (id: number) => {
+    if (userIsLoggedIn.value) {
+      let data = filteredProducts.value.filter(product => product.id == id)[0];
+      await apiService.post(`${apiEndpoint}/${id}/favorito`, data)
+
+      data.totalFavoritas += 1;
+
+      await apiService.post(`${apiEndpoint}/${id}`, data);
+
+      favorites.value.produtos.push(data);
+      favorites.value.total += 1;
+
+    } else {
+      showLoggedInMessage.value = true;
     }
-  };
-
-  const removeFromFavorite = (anuncioId: Number, totalFavoritadas: number) => {
-    const productIndex = favoritesProducts.value.findIndex(product => product.id === anuncioId);
-
-    if(productIndex !== -1) favoritesProducts.value.splice(productIndex, 1);
   }
 
-  watch(productTypeSelected, () => {
+  const onDelete = async (id: number) => {
+    await apiService.delete(`${apiEndpoint}/${id}/favorito`)
+    let data = favorites.value.produtos.filter(product => product.id === id)[0];
+    data.totalFavoritas -= 1;
+
+    favorites.value.total -= 1;
+    favorites.value.produtos = favorites.value.produtos.filter(product => product.id !== id);
+
+    await apiService.post(`${apiEndpoint}/${id}`, data);
+  }
+
+  onBeforeMount(async () => {
+    Object.assign(filteredProducts.value, (await apiService.get(`${apiEndpoint}/novidades/0/10`)).data)
+    Object.assign(favorites.value, (await apiService.get(`${apiEndpoint}favoritos`)).data)
+    Object.assign(tiposDeProduto.value, (await apiService.get(`${apiEndpoint}/filtros`)).data)
+
+    favoritesLoaded.value = true;
+  });
+
+  watch(productTypeSelected, async () => {
     scrollToTop();
     showProgressLoading.value = !showProgressLoading.value;
-    productSizesType.value = getSizes(productTypeSelected.value);
+    await getSizes(productTypeSelected.value);
+  });
+
+  watch(sizeSelected, async () => {
+    scrollToTop();
+    showProgressLoading.value = !showProgressLoading.value;
+
+    if (sizeSelected.value !== undefined){
+      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10?idTipoProduto=${idTipoProduto.value}&tamanho=${sizeSelected.value}`)).data;
+    } else {
+      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10?idTipoProduto=${idTipoProduto.value}`)).data;
+    }
+
   });
 
   watch(showProgressLoading, (value: boolean) => {
@@ -45,22 +92,33 @@
     setTimeout(() => (showProgressLoading.value = false), 999)
   });
 
-  const getSizes = (index: number | null) => {
-    if(index != undefined){
-      filteredProducts.value =
-      productsFeed.filter(product => product.idTipoProduto === index);
-    }else{
-      filteredProducts.value = productsFeed;
-    }
 
-    const sizes = tiposDeProduto.tipos.find(item => item.id == index);
-    return (!sizes) ? null : sizes["Tamanhos"];
+  const getSizes = async (index: number | null) => {
+    if(index !== undefined && index !== null){
+      idTipoProduto.value = index;
+      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10?idTipoProduto=${idTipoProduto.value}`)).data;
+
+      const sizes = tiposDeProduto.value.tipos.find(filtro => filtro.id == index);
+      if(sizes != undefined) productSizesType.value = sizes["Tamanhos"];
+    } else {
+      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10`)).data;
+    }
   };
 
   const scrollToTop = () => {
     window.scrollTo({
       top:0, behavior: "smooth"
     })
+  };
+
+  const loadMoreProducts = async () => {
+    pageProducts.value += 1;
+    const moreProduct = (await apiService.get(`${apiEndpoint}/novidades/${pageProducts.value}/10`)).data;
+    if (moreProduct.length > 0) filteredProducts.value.push(...moreProduct);
+  }
+
+  const productAlreadyLiked = (productId: number) => {
+    return (favorites.value.produtos.find(product => product.id === productId))? true: false;
   };
 
 </script>
@@ -73,48 +131,67 @@
 
   <VContainer style="max-width: 1430px !important; min-height: 99vh;">
 
-    <VRow no-gutters class="hidden-sm-and-up">
-      <CustomChips v-model="productTypeSelected" :array="tiposDeProduto.tipos" singleLine/>
-      <CustomChips v-if="productTypeSelected" v-model="sizeSelected" title="TAMANHOS" :array="productSizesType" singleLine/>
+    <VRow no-gutters class="hidden-sm-and-up overflow-auto">
+      <div class="d-inline-flex">
+        <VChipGroup class="d-flex flex-nowrap" column v-model="productTypeSelected">
+          <VChip v-for="item in tiposDeProduto.tipos" :key="item.id" :value="item.id" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+        </VChipGroup>
+      </div>
+    </VRow>
+
+    <VRow no-gutters class="hidden-sm-and-up overflow-auto">
+      <div class="d-inline-flex">
+        <VChipGroup class="d-flex flex-nowrap" column v-model="sizeSelected">
+          <VChip v-for="item in productSizesType" :key="item.id" :value="item.id" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+        </VChipGroup>
+      </div>
     </VRow>
 
 
 
-    <VRow v-if="!showProgressLoading">
+    <VRow v-if="!showProgressLoading && favoritesLoaded">
       <VCol cols="12" sm="7" md="5" lg="5" class="text-medium-emphasis">
-        <div v-for="produto in filteredProducts" :key="produto.id" class="product__card mb-10" style="cursor: pointer;">
-          <ProductMarket
-            :anuncioId="produto.id"
-            :nomeMarca="produto.nomeMarca"
-            :nomeProduto="produto.nome"
-            :moeda="produto.moeda"
-            :preco="produto.preco"
-            :fotoPrincipal="produto.fotoPrincipal"
-            :totalFavoritadas="produto.totalFavoritadas"
-            :tamanhos="produto.TamanhoProdutoSelecao"
-            @addProductToFavorite="addToFavorite"
-            @removeProductFromFavorite="removeFromFavorite"
-            >
-          </ProductMarket>-
-        </div>
-        <div class="d-flex justify-center">
-          <VBtn class="text-subtitle-2 text-uppercase" flat variant="text">Mais produtos</VBtn>
-        </div>
-
+        <VInfiniteScroll :onLoad="loadMoreProducts" :items="filteredProducts">
+          <div v-for="produto in filteredProducts" :key="produto.id" class="product__card mb-10" style="cursor: pointer;">
+            <ProductMarket
+              :anuncioId="produto.id"
+              :nomeMarca="produto.nomeMarca"
+              :nomeProduto="produto.nome"
+              :moeda="produto.moeda"
+              :preco="produto.preco"
+              :fotoPrincipal="produto.fotoPrincipal"
+              :totalFavoritas="produto.totalFavoritas"
+              :tamanhos="produto.TamanhoProdutoSelecao"
+              :dataCriacao="produto.dataCriacao"
+              :userLiked="productAlreadyLiked(produto.id)"
+              @addProductToFavorite="onAdd"
+              @removeProductFromFavorite="onDelete"
+              >
+            </ProductMarket>
+          </div>
+          <div class="d-flex justify-center">
+            <VBtn class="text-subtitle-2 text-uppercase" flat variant="text" @click="loadMoreProducts">Mais produtos</VBtn>
+          </div>
+        </VInfiniteScroll>
       </VCol>
 
       <VCol class="d-none d-sm-block" cols="2" sm="5" md="7" lg="7">
         <VContainer fluid style="top: 0 !important; position: sticky !important; padding: 0;">
           <VRow no-gutters>
-          <CustomChips v-model="productTypeSelected" :array="tiposDeProduto.tipos"/>
+            <VChipGroup column v-model="productTypeSelected">
+              <VChip v-for="item in tiposDeProduto.tipos" :key="item.id" :value="item.id" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+            </VChipGroup>
 
           <div v-if="productTypeSelected" class="mt-3">
-            <CustomChips v-model="sizeSelected" title="TAMANHOS" :array="productSizesType"/>
+            <h4 class="text-uppercase">tamanhos</h4>
+            <VChipGroup column v-model="sizeSelected">
+              <VChip v-for="item in productSizesType" :key="item.id" :value="item.id" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+            </VChipGroup>
           </div>
 
         </VRow>
 
-        <div v-if="favoritesProducts.length" class="mt-5">
+        <div v-if="favoritesLoaded && favorites.total > 0" class="mt-5">
           <VRow no-gutters justify="space-between" align="center">
             <h4 class="text-uppercase">Favoritos</h4>
             <VBtn flat variant="text" class="text-caption" @click="router.push('/favoritos')">VER TODOS</VBtn>
@@ -123,7 +200,7 @@
           <VRow>
             <div class="d-inline-flex overflow-auto">
               <ProductFavorite
-                v-for="pr in favoritesProducts" :key="pr.id"
+                v-for="pr in favorites.produtos" :key="pr.id"
                 :productInfo="pr"
               />
             </div>
@@ -133,6 +210,12 @@
 
       </VCol>
     </VRow>
+
+    <VSnackbar v-model="showLoggedInMessage" :timeout="2000" color="secondary" location="bottom left">
+      <span class="pa-3">
+        Você deve estar logado para favoritar um anúncio
+      </span>
+    </VSnackbar>
 
   </VContainer>
 

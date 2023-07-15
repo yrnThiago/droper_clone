@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { DateType, TipoDeProduto } from "@/Interfaces/interfaces";
-import {ref, watch} from "vue";
+  import { DateType, ProductSizesType, TipoDeProduto } from "@/Interfaces/interfaces";
+import {ref, watch, computed} from "vue";
 
 
   const props = defineProps<{
     modelValue: number | null,
-    array: DateType[] | TipoDeProduto[],
+    array: DateType[],
     size?: string,
     singleLine?: boolean,
     title?: string
@@ -19,9 +19,9 @@ import {ref, watch} from "vue";
   <VChipGroup
     v-if="!singleLine"
     column
-    v-model:model-value="chipSelected"
+    v-model="chipSelected"
     @update:model-value="$emit('update:modelValue', $event)">
-    <VChip v-for="item in props.array" :key="item.id" :value="item.id" :size="props.size" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+    <VChip v-for="item in props.array" :key="item.numero" :value="item.numero" :size="props.size" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
   </VChipGroup>
 
   <VRow v-else no-gutters class="overflow-auto">
@@ -31,7 +31,7 @@ import {ref, watch} from "vue";
         v-model:model-value="chipSelected"
         @update:model-value="$emit('update:modelValue', $event)"
         >
-        <VChip v-for="item in props.array" :key="item.id" :value="item.id" :size="props.size" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
+        <VChip v-for="item in props.array" :key="item.numero" :value="item.numero" :size="props.size" rounded="lg" class="font-weight-bold text-uppercase">{{ item.titulo }}</VChip>
       </VChipGroup>
     </div>
   </VRow>

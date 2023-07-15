@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import Calendar from "@models/Calendar";
 import { ICalendarRepository } from "@interfaces/Calendar";
 import IContext from "@interfaces/Context";
-import Address from "@models/Address";
+import { CalendarOrderType } from "@domain/Calendar";
 
 class CalendarRepository implements ICalendarRepository {
   repository: Repository<Calendar>;
@@ -21,8 +21,17 @@ class CalendarRepository implements ICalendarRepository {
   }
 
   // eslint-disable-next-line no-unused-vars
-  async getMany(ctx: IContext): Promise<Calendar[]> {
-    const calendars = await this.repository.find();
+  async getMany(ctx: IContext, page: number, amount: number, filtroChave: CalendarOrderType, where: {}): Promise<Calendar[]> {
+    const calendars = await this.repository.find({
+      where: { ...where }, skip: page * amount, take: amount, order: filtroChave
+    });
+    return calendars;
+  }
+
+  async getManyBySearch(ctx: IContext, page: number, amount: number, where: {}): Promise<Calendar[]> {
+    const calendars = await this.repository.find({
+      where: { ...where }, skip: page * amount, take: amount
+    });
     return calendars;
   }
 

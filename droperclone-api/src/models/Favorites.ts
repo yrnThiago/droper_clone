@@ -1,24 +1,23 @@
 /* eslint-disable no-unused-vars */
 import {
-  Entity, Column
+  Entity, Column, PrimaryColumn
 } from "typeorm";
-import Metadata from "@models/Metadata";
 import { IsNotEmpty } from "class-validator";
 
 @Entity()
-class Favorites extends Metadata {
-  @Column("int", {
-    name: "id"
-  })
+class Favorites {
+  @PrimaryColumn("int")
   @IsNotEmpty()
-  productId: number;
+  id: number;
 
-  @Column("int")
-  @IsNotEmpty()
+  @Column("int", {
+    nullable: true
+  })
   idTipoProduto: number;
 
-  @Column("int")
-  @IsNotEmpty()
+  @Column("int", {
+    nullable: true
+  })
   idDrop: number;
 
   @Column("int", {
@@ -40,9 +39,6 @@ class Favorites extends Metadata {
   preco: string;
 
   @Column("varchar")
-  precoCusto: string;
-
-  @Column("varchar")
   nome: string;
 
   @Column("varchar")
@@ -53,44 +49,23 @@ class Favorites extends Metadata {
   @IsNotEmpty()
   fotoPrincipal: string;
 
-  @Column("boolean")
-  isAtivo: boolean;
-
-  @Column("boolean")
-  isVendido: boolean;
-
-  @Column("int")
-  visitas: number;
-
-  @Column("boolean")
-  isNovo: boolean;
-
-  @Column("boolean")
-  isOriginal: boolean;
-
-  @Column("varchar")
-  @IsNotEmpty()
-  condicaoDescricao: string;
-
-  @Column("varchar")
-  @IsNotEmpty()
-  dropIcon: string;
-
-  @Column("varchar", {
-    nullable: true
-  })
-  descricao: string;
-
-  @Column("varchar")
-  @IsNotEmpty()
-  statusBox: string;
-
-  @Column("varchar", {
-    nullable: true
-  })
-  Vendedor: string;
-
-  @Column("simple-array")
+  @Column('simple-array')
   TamanhoProdutoSelecao: string[];
+
+  @Column('varchar')
+  @IsNotEmpty()
+  nomeMarca: string;
+
+  @Column('varchar')
+  @IsNotEmpty()
+  urlMarca: string;
+
+  @Column('int')
+  @IsNotEmpty()
+  totalFavoritas: number;
+
+  @Column('datetime')
+  @IsNotEmpty()
+  dataCriacao: Date;
 }
 export default Favorites;

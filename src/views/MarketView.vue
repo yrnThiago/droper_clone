@@ -6,7 +6,18 @@
   import BottomNav from '@/components/BottomNav.vue';
   import Footer from "@/components/Footer.vue";
 
+  import ApiService from "@/services/ApiService";
+
   const router = useRouter();
+
+  const apiService = new ApiService();
+  const apiEndpoint = 'public/auth';
+
+  const logout = async() => {
+  localStorage.removeItem('is-auth');
+  await apiService.get('public/auth/logout');
+  setTimeout(() => { router.push({ path: '/login' }); notification.show = false }, 1000)
+}
 
   const additionalBtns = ref([
     {id: 1, icon: 'mdi-poll', route: '/feed'},
@@ -47,6 +58,7 @@
     {
       icon: 'mdi-exit-to-app',
       title: 'Sair',
+      onClick: logout,
       value: 9,
     }
   ]);
@@ -123,7 +135,7 @@
 
     <VCard rounded="xl">
       <VList>
-        <VListItem to="/" v-for="item in aboutItems" :key="item.value" :prepend-icon="item.icon" :title="item.title"></VListItem>
+        <VListItem v-for="item in aboutItems" :key="item.value" :prepend-icon="item.icon" :title="item.title" @click="item.onClick"></VListItem>
       </VList>
     </VCard>
 

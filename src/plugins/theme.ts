@@ -31,6 +31,7 @@ const theme: VuetifyOptions['theme'] = {
         'grey-800': '#424242',
         'grey-900': '#212121',
         'background-black': "#000000",
+        'color-text-btn': '#3A3541',
         'on-payment-background': '#FCE803'
       },
 
@@ -72,6 +73,7 @@ const theme: VuetifyOptions['theme'] = {
         'grey-800': '#CFD3EC',
         'grey-900': '#E7E9F6',
         'background-black': "#000000",
+        'color-text-btn': '#FFFFFF',
         'teste': '#FCE803'
       },
       variables: {
