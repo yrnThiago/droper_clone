@@ -4,9 +4,11 @@ import IContext from "@interfaces/Context";
 import IRouter from "@interfaces/Router";
 import IRequestWithContext from "@interfaces/RequestWithContext";
 import { ICalendarRepository } from "./Calendar";
+import { IFeedRepository } from "./Feed";
 
 interface IsearchService {
   calendarRepository: ICalendarRepository;
+  feedRepository: IFeedRepository;
 
   getMany(ctx: IContext, termo: string): Promise<any[]>;
 };

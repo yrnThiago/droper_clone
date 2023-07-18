@@ -34,6 +34,13 @@ class FeedRepository implements IFeedRepository {
     return feeds;
   }
 
+  async getManyBySearch(ctx: IContext, page: number, amount: number, where: {}): Promise<Feed[]> {
+    const feed = await this.repository.find({
+      where: { ...where }, skip: page * amount, take: amount
+    });
+    return feed;
+  }
+
   async getById(ctx: IContext, id: string): Promise<Feed> {
     const feed = await this.repository.findOne(id);
     return feed;

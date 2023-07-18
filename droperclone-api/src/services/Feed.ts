@@ -36,6 +36,14 @@ class FeedService implements IFeedService {
     return this.feedRepository.getMany(ctx, inicio, fim, where);
   }
 
+  async getManyBySearch(ctx: IContext, page: number, amount: number, termo: string): Promise<Feed[]> {
+    const where = {} as {nome: FindOperator<string>};
+
+    where.nome = Like(`%${termo}%`);
+
+    return this.feedRepository.getManyBySearch(ctx, page, amount, where);
+  }
+
   async getProductTypesIds(ctx: IContext): Promise<ProductSizesTypeApiResponse> {
     return TiposDeProduto;
   }
