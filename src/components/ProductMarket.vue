@@ -36,8 +36,7 @@
 
   const userIsLoggedIn = computed(() => {
     const cookieAuth = localStorage.getItem("is-auth");
-    if (cookieAuth !== null) return true;
-    else return false;
+    return cookieAuth !== null;
   });
 
   const productCreatedAtStr = calculateDifferenceTime();

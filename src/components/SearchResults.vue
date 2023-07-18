@@ -1,9 +1,11 @@
 <script setup lang="ts">
   import { onMounted, ref, watch } from "vue";
   import ProductCalendario from "@/components/ProductCalendario.vue";
+  import ProductMarket from "@/components/ProductMarket.vue";
   import { useRoute } from "vue-router";
 import ApiService from "@/services/ApiService";
-import { DropItem } from "@/Interfaces/interfaces";
+import { DropItem, Product } from "@/Interfaces/interfaces";
+import ProductSearch from "./Cards/ProductSearch.vue";
 
   const route = useRoute();
   const productName = ref(route.params.productName.toString());
@@ -11,16 +13,35 @@ import { DropItem } from "@/Interfaces/interfaces";
   const apiService = new ApiService();
   const apiEndpoint = 'public/search/';
 
-  const payload = {
-    "termo": productName.value
+  const temMaisDrops = ref(false);
+  const dropsFiltrados = ref([] as DropItem[]);
+  const dropsPage = ref(0);
+
+  const filteredProducts = ref([] as Product[]);
+  const temMaisProdutos = ref(false);
+  const temProdutos = ref(false);
+
+  const payloadBase = {
+    "termo": productName.value,
+    "page": dropsPage.value,
   };
-  const dropsFiltrados = ref([] as DropItem[])
 
   const searchDrops = async () => {
-    dropsFiltrados.value = (await apiService.post(`${apiEndpoint}`, payload)).data.drops;
-  }
+    const searchResults = (await apiService.post(`${apiEndpoint}`, payloadBase)).data;
 
+    dropsFiltrados.value.push(...searchResults.drops);
+    temMaisDrops.value = searchResults.temMaisDrops;
+
+    filteredProducts.value.push(...searchResults.produtos);
+    temMaisProdutos.value = searchResults.temMaisProdutos;
+    temProdutos.value = searchResults.temProdutos;
+  }
   onMounted(async () => await searchDrops());
+
+  const searchForMoreDrops = async () => {
+    payloadBase.page = dropsPage.value += 1;
+    await searchDrops();
+  }
 
 </script>
 
@@ -39,5 +60,20 @@ import { DropItem } from "@/Interfaces/interfaces";
 
   <VRow v-else no-gutters justify="center" class="mt-12">
     <h2>Não encontramos nenhum item</h2>
+  </VRow>
+
+  <VRow v-if="temMaisDrops" no-gutters justify="center" class="mt-4">
+    <VBtn color="background-black" @click="searchForMoreDrops()">
+      <span class="text-uppercase text-button">
+        ver mais
+      </span>
+    </VBtn>
+  </VRow>
+
+  <VRow v-if="temProdutos" class="mt-4" no-gutters justify="start">
+    <ProductSearch
+      v-for="pr in filteredProducts" :key="pr.id"
+      :productInfo="pr"
+    />
   </VRow>
 </template>

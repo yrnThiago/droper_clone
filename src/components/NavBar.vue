@@ -7,11 +7,10 @@
   import SidebarItems from "./SidebarItems.vue";
 
   const router = useRouter();
-  const userIsLoggedIn = computed(() => {
+  const userIsLoggedIn = () => {
     const cookieAuth = localStorage.getItem("is-auth");
-    if (cookieAuth !== null) return true;
-    else return false;
-  });
+    return cookieAuth !== null;
+  };
 
   const drawer = ref(false);
   const SearchValue = ref("");
@@ -99,7 +98,7 @@
         <VSpacer class="hidden-sm-and-down"></VSpacer>
 
         <VCol class="hidden-sm-and-down" cols="3" md="3" lg="2" align-self="center">
-          <div v-if="userIsLoggedIn" class="d-flex justify-end">
+          <div v-if="userIsLoggedIn()" class="d-flex justify-end">
             <v-btn icon v-for="btn in rightSideBtns" :key="btn.value" @click="redirectTo(btn.route)">
               <v-icon>{{ btn.icon }}</v-icon>
               <v-tooltip

@@ -54,6 +54,7 @@
       variant="underlined"
       base-color="black"
       @click:append="showPassword = !showPassword"
+      @keyup.enter="login"
     ></v-text-field>
   </VRow>
 
