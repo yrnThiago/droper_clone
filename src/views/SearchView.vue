@@ -7,7 +7,7 @@
   const router = useRouter();
   const route = useRoute();
 
-  let searchValue = ref(route.params.productName.toString());
+  let searchValue = ref((route.params.productName)? route.params.productName.toString() : "");
 
   const limparBarraDePesquisa = () => {
     searchValue.value = "";

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { Product } from "@/Interfaces/interfaces";
+import { ref } from "vue";
 
   const props = defineProps<{
-    productInfo: Object
+    productInfo: Product
   }>();
 
   const product = ref(props.productInfo)

@@ -97,9 +97,7 @@ const router = createRouter({
     {
       path: "/buscar",
       name: "buscar",
-      components: {
-        default: SearchView,
-      },
+      component: SearchView,
       children: [
         {
           path: "/buscar/",

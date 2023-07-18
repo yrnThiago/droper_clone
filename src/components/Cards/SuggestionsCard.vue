@@ -3,7 +3,7 @@
   import { ProductSuggest } from "@/Interfaces/interfaces";
 
   const props = defineProps<{
-    suggestionDrops: Array<ProductSuggest>
+    suggestionDrops: ProductSuggest[]
     title: string
   }>();
 </script>
