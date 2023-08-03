@@ -10,9 +10,10 @@ import SearchView from "../views/SearchView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
 import SearchResults from "../components/SearchResults.vue";
 import Suggestions from "../components/Suggestions.vue";
-import NavBar from "../components/NavBar.vue";
+import MarketLojaInicio from "../components/MarketLojaInicio.vue";
 import VendasRelatorioView from "../components/VendasRelatorioView.vue";
 import FavoritosView from "../views/FavoritosView.vue";
+import AnunciosView from "../views/AnunciosView.vue";
 import LoginView from "../views/LoginView.vue";
 import LoginViewComponent from "../views/LoginViewComponent.vue";
 import EntrarViewComponent from "../views/EntrarViewComponent.vue";
@@ -64,12 +65,24 @@ const router = createRouter({
     {
       path: "/market",
       name: "market",
-      meta: { isAuth: true },
       alias: "/market/loja/inicio",
-      components: {
-        TopNavbar: NavBar,
-        default: MarketView,
-      }
+      redirect: "/market/loja/inicio",
+      meta: { isAuth: true },
+      component: MarketView,
+      children: [
+        {
+          path: "/market/loja/inicio",
+          name: "loja",
+          meta: { isAuth: true },
+          component: MarketLojaInicio,
+        },
+        {
+          path: "anuncios",
+          name: "anuncios",
+          meta: { isAuth: true },
+          component: AnunciosView,
+        },
+      ]
     },
     {
       path: "/vendas",
