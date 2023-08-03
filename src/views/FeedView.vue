@@ -9,7 +9,6 @@ import { FavoriteProductsResponseAPI, ProductSizesTypeApiResponse, Product } fro
 import { computed } from "vue";
 
   const router = useRouter();
-  const route = useRoute();
 
   const filteredProducts = ref([] as Product[]);
   const tiposDeProduto = ref({} as ProductSizesTypeApiResponse);
@@ -68,6 +67,14 @@ import { computed } from "vue";
     favoritesLoaded.value = true;
   });
 
+  const urlAtual = computed(() => {
+    let value = `${apiEndpoint}/novidades/${pageProducts.value}/10?`;
+    if(idTipoProduto.value !== 0) value += `idTipoProduto=${idTipoProduto.value}`;
+    if(sizeSelected.value) value += `&tamanho=${sizeSelected.value}`;
+
+    return value;
+  });
+
   watch(productTypeSelected, async () => {
     scrollToTop();
     showProgressLoading.value = !showProgressLoading.value;
@@ -78,11 +85,7 @@ import { computed } from "vue";
     scrollToTop();
     showProgressLoading.value = !showProgressLoading.value;
 
-    if (sizeSelected.value !== undefined){
-      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10?idTipoProduto=${idTipoProduto.value}&tamanho=${sizeSelected.value}`)).data;
-    } else {
-      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10?idTipoProduto=${idTipoProduto.value}`)).data;
-    }
+    filteredProducts.value = (await apiService.get(urlAtual.value)).data;
 
   });
 
@@ -94,14 +97,18 @@ import { computed } from "vue";
 
 
   const getSizes = async (index: number | null) => {
+    pageProducts.value = 0;
+
     if(index !== undefined && index !== null){
       idTipoProduto.value = index;
-      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10?idTipoProduto=${idTipoProduto.value}`)).data;
+      filteredProducts.value = (await apiService.get(urlAtual.value)).data;
 
       const sizes = tiposDeProduto.value.tipos.find(filtro => filtro.id == index);
       if(sizes != undefined) productSizesType.value = sizes["Tamanhos"];
     } else {
-      filteredProducts.value = (await apiService.get(`${apiEndpoint}/novidades/0/10`)).data;
+
+      idTipoProduto.value = 0;
+      filteredProducts.value = (await apiService.get(urlAtual.value)).data;
     }
   };
 
@@ -113,7 +120,7 @@ import { computed } from "vue";
 
   const loadMoreProducts = async () => {
     pageProducts.value += 1;
-    const moreProduct = (await apiService.get(`${apiEndpoint}/novidades/${pageProducts.value}/10`)).data;
+    const moreProduct = (await apiService.get(urlAtual.value)).data;
     if (moreProduct.length > 0) filteredProducts.value.push(...moreProduct);
   }
 
