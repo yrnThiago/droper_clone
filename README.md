@@ -1,57 +1,14 @@
-# base
+# 🛍️ Droper Website Clone
 
-## Project setup
+This is a **clone of the Droper website**, created for educational purposes. The goal of this project is to replicate the look and feel of the original platform, focusing on responsive design, smooth UI interactions, and front-end implementation.
 
-```
-# yarn
-yarn
+> ⚠️ This project is not affiliated with or endorsed by the original Droper platform. It is intended for learning and non-commercial use only.
 
-# npm
-npm install
+---
 
-# pnpm
-pnpm install
-```
+## 🛠️ Tech Stack
 
-### Compiles and hot-reloads for development
+- Typescript
+- Vue
 
-```
-# yarn
-yarn dev
-
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-```
-
-### Compiles and minifies for production
-
-```
-# yarn
-yarn build
-
-# npm
-npm run build
-
-# pnpm
-pnpm build
-```
-
-### Lints and fixes files
-
-```
-# yarn
-yarn lint
-
-# npm
-npm run lint
-
-# pnpm
-pnpm lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://vitejs.dev/config/).
+---
